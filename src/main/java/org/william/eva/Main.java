@@ -1,10 +1,9 @@
 package org.william.eva;
 
-/**
- * Hello world!
- */
+import org.william.eva.ui.Frame;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        new Frame();
     }
 }
