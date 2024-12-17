@@ -40,6 +40,15 @@
       <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
+	<dependency>
+		<groupId>com.formdev</groupId>
+    	<artifactId>flatlaf</artifactId>
+    	<version>3.5.4</version>
+    	<scope>runtime</scope>
+	</dependency>
+
   </dependencies>
 
   <build>
