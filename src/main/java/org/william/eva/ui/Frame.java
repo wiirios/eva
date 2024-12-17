@@ -3,6 +3,9 @@ package org.william.eva.ui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.FlatDarkLaf;
 
 public class Frame {
 	private int WIDTH = 300;
@@ -14,6 +17,14 @@ public class Frame {
 	}
 
 	private void initialize() {
+		FlatDarkLaf.setup();
+		
+		try {
+			UIManager.setLookAndFeel(new FlatDarkLaf());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {				
