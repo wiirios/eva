@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -57,7 +58,12 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							jFile.showOpenDialog(null);
+							int t = jFile.showOpenDialog(null);
+							
+							if (t == JFileChooser.APPROVE_OPTION) {
+								String fileName = jFile.getName(jFile.getSelectedFile());
+								frame.setTitle(fileName);
+							}
 						}
 						
 					});
