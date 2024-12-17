@@ -63,6 +63,18 @@ public class Frame {
 					});
 					mnNewMenu.add(mntmNewMenuItem);
 					
+					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
+					mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+					mntmNewMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							jFile.showSaveDialog(null);
+						}
+						
+					});
+					mnNewMenu.add(mntmNewMenuItem_1);
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
