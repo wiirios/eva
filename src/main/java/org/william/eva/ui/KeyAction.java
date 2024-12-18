@@ -15,6 +15,29 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class KeyAction {
+	/**
+	 * get file name (String)
+	 * @param file to get the name
+	 * @return the name of the file including its extension eg: .java, .txt
+	 */
+	
+	public static String getFileName(JFileChooser jFile) {
+		String fileName = jFile.getName(jFile.getSelectedFile());
+		return fileName;
+	}
+	
+	/**
+	 * given a file to return the path
+	 * 
+	 * @param file to get the path
+	 * @return the path of file
+	 */
+	
+	public static Path getFilePath(JFileChooser jFile) {
+		File fileSelected = jFile.getSelectedFile();
+		Path filePath = Paths.get(String.valueOf(fileSelected));
+		return filePath;
+	}
 	
 	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame) {
 		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
