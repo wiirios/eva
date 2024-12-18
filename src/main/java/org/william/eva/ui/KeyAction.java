@@ -49,9 +49,29 @@ public class KeyAction {
 				
 				if (dialogOpen == JFileChooser.APPROVE_OPTION) {
 					frame.setTitle(KeyAction.getFileName(jFile));
-					
 					try (BufferedReader reader = Files.newBufferedReader(KeyAction.getFilePath(jFile))){
 						System.out.println(reader.readLine());
+						} catch (Exception ex) {
+							ex.printStackTrace();
+							}
+					} else {
+						System.err.println();
+						}
+				}
+			});
+		}
+	
+	public void saveDialog(JMenuItem mntmNewMenuItem_1, JFileChooser jFile, JFrame frame) {
+		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int t = jFile.showSaveDialog(null);
+				
+				if (t == JFileChooser.APPROVE_OPTION) {
+					try (BufferedReader reader = Files.newBufferedReader(KeyAction.getFilePath(jFile))) {
+						
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -61,6 +81,4 @@ public class KeyAction {
 			}
 		});
 	}
-	
-
 }

@@ -69,15 +69,8 @@ public class Frame {
 					mnNewMenu.add(mntmNewMenuItem);
 					
 					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
-					mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-					mntmNewMenuItem_1.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							jFile.showSaveDialog(null);
-						}
-						
-					});
+					
+					btnAction.saveDialog(mntmNewMenuItem_1, jFile, frame);
 					mnNewMenu.add(mntmNewMenuItem_1);
 					
 					JTextPane textPane = new JTextPane();
