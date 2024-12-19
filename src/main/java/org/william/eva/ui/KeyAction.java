@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,7 @@ import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
 public class KeyAction {
@@ -39,7 +41,32 @@ public class KeyAction {
 		return filePath;
 	}
 	
-	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame) {
+	public static void writerTextPane(JFileChooser jFile ,JTextPane textPane) {
+		try (BufferedReader reader = Files.newBufferedReader(KeyAction.getFilePath(jFile))) {
+			StringBuilder stringBuilder = new StringBuilder();
+			String line = null;
+			
+			while ((line = reader.readLine()) != null) {
+				stringBuilder.append(line);
+				stringBuilder.append("\r");
+			}
+			textPane.setText(String.valueOf(stringBuilder));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	
+	/**
+	 * 
+	 * @param mntmNewMenuItem
+	 * @param jFile
+	 * @param frame
+	 * @param textPane
+	 */
+	
+	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
 		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 
@@ -49,17 +76,19 @@ public class KeyAction {
 				
 				if (dialogOpen == JFileChooser.APPROVE_OPTION) {
 					frame.setTitle(KeyAction.getFileName(jFile));
-					try (BufferedReader reader = Files.newBufferedReader(KeyAction.getFilePath(jFile))){
-						System.out.println(reader.readLine());
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							}
-					} else {
-						System.err.println();
-						}
+					KeyAction.writerTextPane(jFile, textPane);
+					}
 				}
-			});
-		}
+		});
+	}
+	
+	
+	/**
+	 * Working in
+	 * @param mntmNewMenuItem_1
+	 * @param jFile
+	 * @param frame
+	 */
 	
 	public void saveDialog(JMenuItem mntmNewMenuItem_1, JFileChooser jFile, JFrame frame) {
 		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
@@ -71,7 +100,7 @@ public class KeyAction {
 				
 				if (t == JFileChooser.APPROVE_OPTION) {
 					try (BufferedReader reader = Files.newBufferedReader(KeyAction.getFilePath(jFile))) {
-						
+						// ...
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
