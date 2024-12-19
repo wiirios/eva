@@ -1,4 +1,4 @@
-package org.william.eva.ui;
+package org.william.eva.input;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
