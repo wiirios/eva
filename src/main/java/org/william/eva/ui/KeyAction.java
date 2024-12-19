@@ -55,8 +55,6 @@ public class KeyAction {
 			e.printStackTrace();
 		}
 	}
-
-	
 	
 	/**
 	 * 
@@ -81,7 +79,6 @@ public class KeyAction {
 				}
 		});
 	}
-	
 	
 	/**
 	 * Working in
