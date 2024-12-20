@@ -22,11 +22,17 @@ public class KeyAction {
 	FileManager fileManager = new FileManager();
 	
 	/**
+	 * Configures a menu item to open a file dialog and handle file selection.
 	 * 
-	 * @param mntmNewMenuItem
-	 * @param jFile
-	 * @param frame
-	 * @param textPane
+	 * This method sets up a keyboard shortcut (Ctrl+O) for the specified menu item. When the menu item is 
+	 * clicked or the shortcut is used, a file chooser dialog is displayed. If a file is selected, the 
+	 * frame's title is updated with the file name, and the file's content is loaded into the provided 
+	 * JTextPane.
+	 * 
+	 * @param mntmNewMenuItem The JMenuItem to be configured for opening the file dialog.
+	 * @param jFile The JFileChooser instance used to display the file dialog.
+	 * @param frame The JFrame whose title will be updated with the selected file's name.
+	 * @param textPane The JTextPane where the content of the selected file will be displayed.
 	 */
 	
 	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
