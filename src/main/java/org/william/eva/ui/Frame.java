@@ -47,6 +47,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JEditorPane;
+import javax.swing.JSplitPane;
 
 public class Frame {
 	private final int WIDTH = 400;
@@ -133,6 +136,9 @@ public class Frame {
 					JPanel panel_2 = new JPanel();
 					panel_1.add(panel_2, BorderLayout.SOUTH);
 					panel_2.setLayout(new BorderLayout(0, 0));
+					
+					JScrollPane jScrollPane = new JScrollPane(textPane);
+					frame.add(jScrollPane);
 					
 					JButton btnNewButton = new JButton("Terminal");
 					btnNewButton.setEnabled(false);
