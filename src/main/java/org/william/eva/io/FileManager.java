@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
 
 public class FileManager {
+	private final String dot = ".";
+	
 	public FileManager() {}
 	
 	/**
@@ -26,6 +28,21 @@ public class FileManager {
 	public String getFileName(JFileChooser jFile) {
 		String fileName = jFile.getName(jFile.getSelectedFile());
 		return fileName;
+	}
+	
+	/**
+	 * Retrieves the extension of the selected file
+	 * 
+	 * This method uses the JFileChooser to get the selected file and then extracts 
+	 * its extension
+	 *
+	 * @param jFile The JFileChooser instance used to select the file.
+	 * @return The extension of the selected file
+	 */
+	
+	public String getFileExtension(JFileChooser jFile) {
+		String fileExtension = getFileName(jFile);
+		return fileExtension.substring(fileExtension.indexOf(dot));
 	}
 	
 	/**
