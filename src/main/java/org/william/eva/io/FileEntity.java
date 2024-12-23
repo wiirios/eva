@@ -1,15 +1,19 @@
 package org.william.eva.io;
 
+import java.nio.file.Path;
+
 public class FileEntity {
 	String name;
 	String extension;
+	Path path;
 	Long size;
 	
 	// constructor
 
-	public FileEntity(String name, String extension, Long size){
+	public FileEntity(String name, String extension, Path path, Long size){
 		this.name = name;
 		this.extension = extension;
+		this.path = path;
 		this.size = size;
 	}
 	
@@ -37,6 +41,14 @@ public class FileEntity {
 
 	public void setSize(Long size) {
 		this.size = size;
+	}
+	
+	public Path getPath() {
+		return path;
+	}
+
+	public void setPath(Path path) {
+		this.path = path;
 	}
 
 }
