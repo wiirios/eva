@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
+import org.william.eva.io.FileEntity;
 import org.william.eva.io.FileManager;
 
 public class KeyAction {
@@ -44,7 +45,9 @@ public class KeyAction {
 				int dialogOpen = jFile.showOpenDialog(null);
 				
 				if (dialogOpen == JFileChooser.APPROVE_OPTION) {
-					frame.setTitle(fileManager.getFileName(jFile));
+					FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
+
+					frame.setTitle(fileArchive.getName());
 					fileManager.writerTextPane(jFile, textPane);
 					}
 				}
