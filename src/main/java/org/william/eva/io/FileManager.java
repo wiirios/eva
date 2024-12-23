@@ -2,8 +2,8 @@ package org.william.eva.io;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
 
 public class FileManager {
+	public FileManager() {}
+	
 	/**
 	 * Retrieves the name of the selected file, including its extension.
 	 * 
@@ -36,10 +38,31 @@ public class FileManager {
 	 * @return The Path representing the location of the selected file.
 	 */
 	
-	public static Path getFilePath(JFileChooser jFile) {
+	public Path getFilePath(JFileChooser jFile) {
 		File fileSelected = jFile.getSelectedFile();
 		Path filePath = Paths.get(String.valueOf(fileSelected));
 		return filePath;
+	}
+	
+	/**
+	 * Returns the size of the file selected
+	 * 
+	 * This method returns the size of file in bytes
+	 *
+	 * @param jFile The JFileChooser instance used to select the file.
+	 * @return The size of file or null if the file is not valid.
+	 */
+	
+	public Long getFileSize(JFileChooser jFile) {
+		Long result = null;
+		
+		try {
+			result = Files.size(getFilePath(jFile));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -53,10 +76,10 @@ public class FileManager {
 	 */
 	
 	public void writerTextPane(JFileChooser jFile ,JTextPane textPane) {
-		try (BufferedReader reader = Files.newBufferedReader(getFilePath(jFile))) {
-			StringBuilder stringBuilder = new StringBuilder();
-			String line = null;
-			
+		StringBuilder stringBuilder = new StringBuilder();
+		String line = null;
+		
+		try (BufferedReader reader = Files.newBufferedReader(getFilePath(jFile))) {	
 			while ((line = reader.readLine()) != null) {
 				stringBuilder.append(line);
 				stringBuilder.append("\r");
