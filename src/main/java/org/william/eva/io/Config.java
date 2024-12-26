@@ -1,7 +1,11 @@
 package org.william.eva.io;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class Config  {
@@ -31,5 +35,29 @@ public class Config  {
 		
 		return theme;
 	}
+	
+	public Integer getSystemTheme() throws IOException {
+		Charset charset = Charset.forName("ISO-8859-1");
+		StringBuilder stringBuilder = new StringBuilder();
+		String osName = System.getProperty("os.name");
+		String line = null;
+		Integer result;
+		
+		if (osName.toLowerCase().contains("windows")) {
+			String[] regedit = new String[] {"cmd.exe", "/c" , "reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v AppsUseLightTheme"};
+			Process process = Runtime.getRuntime().exec(regedit);
 
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream(), charset));
+			
+			while((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+			
+			result = Integer.valueOf(stringBuilder.substring(stringBuilder.length() - 1));
+		} else {
+			return null;
+		}
+		
+		return result;
+	}
 }
