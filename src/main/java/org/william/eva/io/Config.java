@@ -36,6 +36,20 @@ public class Config  {
 		return theme;
 	}
 	
+	/**
+	 * Retrieves the current system theme.
+	 * 
+	 * This method checks if the operating system is Windows, then executes a command to read the value from the Windows registry
+	 * that indicates whether the light or dark theme is being used. If the operating system is not Windows, the method currently 
+	 * does not support other platforms and returns null.
+	 * 
+	 * The returned value will be 1 (light theme) or 0 (dark theme) based on the system configuration.
+	 * 
+	 * @return An integer indicating the system theme (1 for light theme, 0 for dark theme), or null if the operating system is not Windows 
+	 *         (support for other platforms like Linux is not implemented!).
+	 * @throws IOException If an error occurs while reading the registry value or executing the command.
+	 */
+	
 	public Integer getSystemTheme() throws IOException {
 		Charset charset = Charset.forName("ISO-8859-1");
 		StringBuilder stringBuilder = new StringBuilder();
