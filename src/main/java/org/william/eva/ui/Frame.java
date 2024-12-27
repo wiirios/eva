@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,12 +15,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.StyledDocument;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
@@ -42,9 +46,11 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import org.william.eva.input.KeyAction;
+import org.william.eva.io.Config;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -62,18 +68,20 @@ public class Frame {
 
 	private void initialize() {
 		JFileChooser jFile = new JFileChooser("c:");
+		Config config = new Config();
 		
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
-		
-		FlatDarkLaf flatDark = new FlatDarkLaf();
-		FlatLightLaf flatLight = new FlatLightLaf();
 
 		try {
-			UIManager.setLookAndFeel(flatDark);
+			if (config.getSystemTheme() == 0) {
+				UIManager.setLookAndFeel(new FlatDarkLaf());
+			} else {
+				UIManager.setLookAndFeel(new FlatLightLaf());
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}
+		}		
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -81,8 +89,8 @@ public class Frame {
 					frame = new JFrame();
 					frame.setSize(WIDTH, HEIGHT);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setLocationRelativeTo(null);
-					
+					frame.setLocationRelativeTo(null);			
+
 					KeyAction btnAction = new KeyAction();
 					
 					JMenuBar menuBar = new JMenuBar();
@@ -140,6 +148,10 @@ public class Frame {
 					JScrollPane jScrollPane = new JScrollPane(textPane);
 					frame.add(jScrollPane);
 					
+					JDialog jDialog = new JDialog(frame);
+					jDialog.setTitle("Preferences");
+					jDialog.setSize(WIDTH, HEIGHT);
+								
 					JButton btnNewButton = new JButton("Terminal");
 					btnNewButton.setEnabled(false);
 					btnNewButton.setFont(new Font("BIZ UDPGothic", Font.PLAIN, 11));
