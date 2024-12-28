@@ -16,6 +16,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -99,7 +101,7 @@ public class Frame {
 					JTextPane textPane = new JTextPane();
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
 					frame.getContentPane().add(textPane, BorderLayout.CENTER);
-					
+
 					JPanel panel = new JPanel();
 					frame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
@@ -115,6 +117,12 @@ public class Frame {
 					
 					btnAction.saveDialog(mntmNewMenuItem_1, jFile, frame);
 					mnNewMenu.add(mntmNewMenuItem_1);
+					
+					JMenu mnNewMenu_2 = new JMenu("Project");
+					menuBar.add(mnNewMenu_2);
+					
+					JMenuItem mntmNewMenuItem_3 = new JMenuItem("Run");
+					mnNewMenu_2.add(mntmNewMenuItem_3);
 					
 					JMenu mnNewMenu_1 = new JMenu("Window");
 					menuBar.add(mnNewMenu_1);
@@ -146,7 +154,7 @@ public class Frame {
 					panel_2.setLayout(new BorderLayout(0, 0));
 					
 					JScrollPane jScrollPane = new JScrollPane(textPane);
-					frame.add(jScrollPane);
+					frame.getContentPane().add(jScrollPane);
 					
 					JDialog jDialog = new JDialog(frame);
 					jDialog.setTitle("Preferences");
