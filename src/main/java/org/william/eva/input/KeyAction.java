@@ -16,8 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
-import org.william.eva.io.FileEntity;
-import org.william.eva.io.FileManager;
+import org.william.eva.io.file.FileEntity;
+import org.william.eva.io.file.FileManager;
 
 public class KeyAction {
 	FileManager fileManager = new FileManager();
