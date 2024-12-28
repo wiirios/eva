@@ -156,15 +156,12 @@ public class Frame {
 					JScrollPane jScrollPane = new JScrollPane(textPane);
 					frame.getContentPane().add(jScrollPane);
 					
+					Component horizontalStrut = Box.createHorizontalStrut(55);
+					jScrollPane.setRowHeaderView(horizontalStrut);
+					
 					JDialog jDialog = new JDialog(frame);
 					jDialog.setTitle("Preferences");
 					jDialog.setSize(WIDTH, HEIGHT);
-								
-					JButton btnNewButton = new JButton("Terminal");
-					btnNewButton.setEnabled(false);
-					btnNewButton.setFont(new Font("BIZ UDPGothic", Font.PLAIN, 11));
-					btnNewButton.setBackground(new Color(36, 37, 43));
-					panel_2.add(btnNewButton, BorderLayout.CENTER);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
