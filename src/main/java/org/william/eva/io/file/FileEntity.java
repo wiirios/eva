@@ -3,10 +3,10 @@ package org.william.eva.io.file;
 import java.nio.file.Path;
 
 public class FileEntity {
-	String name;
-	String extension;
-	Path path;
-	Long size;
+	private String name;
+	private String extension;
+	private Path path;
+	private Long size;
 	
 	// constructor
 
