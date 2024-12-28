@@ -9,31 +9,32 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class Config  {
-	private String propertiesPath = "./src/main/resources/config.properties";
+	private final String propertiesPath = "./src/main/resources/config.properties";
 	
 	/**
-	 * Retrieves the theme configuration from a properties file.
+	 * Retrieves a specified configuration value from a properties file.
 	 * 
-	 * This method reads a properties file and extracts
-	 * the value associated with the "theme". The theme can either 
-	 * be "light" or "dark", allowing the application to switch between these modes.
+	 * This method reads a properties file and extracts the value associated 
+	 * with the provided key. It allows for dynamic retrieval of any property 
+	 * by passing the desired key as a parameter.
 	 * 
-	 * @return A String representing the theme specified in the properties file. 
-	 *         If the key "theme" does not exist, it returns null.
+	 * @param value The key of the property to be retrieved from the properties file.
+	 * @return A String representing the value associated with the specified key. 
+	 *         If the key does not exist, it returns null.
 	 * 
 	 * @throws IOException If an error occurs while reading the properties file. 
 	 *                     This can happen if the file is not found, cannot be opened, 
 	 *                     or there is an issue during the load process.
 	 */
 	
-	public String getTheme() throws IOException {
+	public String getProperties(String value) throws IOException {
 		Properties properties = new Properties();
 		FileInputStream fileInputStream = new FileInputStream(propertiesPath);
 		
 		properties.load(fileInputStream);
-		String theme = properties.getProperty("theme");
+		String result = properties.getProperty(value);
 		
-		return theme;
+		return result;
 	}
 	
 	/**
