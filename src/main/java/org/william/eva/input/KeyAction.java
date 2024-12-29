@@ -33,7 +33,6 @@ public class KeyAction {
 	 * @param frame The JFrame whose title will be updated with the selected file's name.
 	 * @param textPane The JTextPane where the content of the selected file will be displayed.
 	 */
-
 	
 	public void openDialog(JFileChooser jFile, JFrame frame, JTextPane textPane) {
 		int dialogOpen = jFile.showOpenDialog(null);
