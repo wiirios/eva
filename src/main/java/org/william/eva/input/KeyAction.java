@@ -47,16 +47,14 @@ public class KeyAction {
 	}
 	
 	/**
-	 * Configures a save dialog for a JMenuItem to save the contents of a JTextPane to a file.
+	 * Opens a save dialog to save the contents of a JTextPane to a file.
 	 * 
-	 * This method assigns a keyboard shortcut (Ctrl + S) to the JMenuItem and adds an action listener.
-	 * When triggered, it opens a save dialog using JFileChooser. If the user approves the save,
-	 * the selected file will be overwritten with the current text in the JTextPane.
+	 * This method displays a save dialog using JFileChooser. If the user approves the save operation, 
+	 * the contents of the JTextPane are written to the selected file, overwriting any existing content. 
+	 * The file chooser allows the user to specify the location and name of the file to be saved.
 	 * 
-	 * @param mntmNewMenuItem JMenuItem to which the save dialog will be attached.
-	 * @param jFile JFileChooser to be used for file selection.
-	 * @param frame JFrame that serves as the parent for the dialog.
-	 * @param textPane JTextPane whose contents will be saved.
+	 * @param jFile The JFileChooser instance used to display the save dialog.
+	 * @param textPane The JTextPane whose contents will be saved to the selected file.
 	 */
 	
 	public void saveDialog(JFileChooser jFile, JTextPane textPane) {
