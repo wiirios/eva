@@ -36,7 +36,7 @@ public class KeyAction {
 	 * @param textPane The JTextPane where the content of the selected file will be displayed.
 	 */
 	
-	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
+	public void openDialog(JFileChooser jFile, JFrame frame, JTextPane textPane) {
 		int dialogOpen = jFile.showOpenDialog(null);
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
@@ -60,18 +60,12 @@ public class KeyAction {
 	 * @param textPane JTextPane whose contents will be saved.
 	 */
 	
-	public void saveDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				int dialogSave = jFile.showSaveDialog(null);
-				
-				if (dialogSave == JFileChooser.APPROVE_OPTION) {
-					fileManager.rewriteArchive(jFile, textPane);
-				}
-			}
-		});
+	public void saveDialog(JFileChooser jFile, JTextPane textPane) {
+		int dialogSave = jFile.showSaveDialog(null);
+		
+		if (dialogSave == JFileChooser.APPROVE_OPTION) {
+			fileManager.rewriteArchive(jFile, textPane);
+		}
 	}
 	
 	/**

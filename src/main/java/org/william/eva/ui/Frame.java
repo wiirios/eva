@@ -121,14 +121,20 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							btnAction.openDialog(mntmNewMenuItem, jFile, frame, textPane);
+							btnAction.openDialog(jFile, frame, textPane);
 						}
-						
 					});
 					
 					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
+					mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+					mntmNewMenuItem_1.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							btnAction.saveDialog(jFile, textPane);
+						}
+					});
 					
-					btnAction.saveDialog(mntmNewMenuItem_1, jFile, frame, textPane);
 					mnNewMenu.add(mntmNewMenuItem_1);
 					
 					JMenu mnNewMenu_2 = new JMenu("Project");
