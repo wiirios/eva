@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -112,13 +113,13 @@ public class Frame {
 					menuBar.add(mnNewMenu);
 					
 					JMenuItem mntmNewMenuItem = new JMenuItem("Open");
-								
+					
 					btnAction.openDialog(mntmNewMenuItem, jFile, frame, textPane);
 					mnNewMenu.add(mntmNewMenuItem);
 					
 					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
 					
-					btnAction.saveDialog(mntmNewMenuItem_1, jFile, frame);
+					btnAction.saveDialog(mntmNewMenuItem_1, jFile, frame, textPane);
 					mnNewMenu.add(mntmNewMenuItem_1);
 					
 					JMenu mnNewMenu_2 = new JMenu("Project");

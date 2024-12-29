@@ -55,30 +55,27 @@ public class KeyAction {
 	}
 	
 	/**
-	 * Working in
-	 * @param mntmNewMenuItem
-	 * @param jFile
-	 * @param frame
+	 * Configures a save dialog for a JMenuItem to save the contents of a JTextPane to a file.
+	 * 
+	 * This method assigns a keyboard shortcut (Ctrl + S) to the JMenuItem and adds an action listener.
+	 * When triggered, it opens a save dialog using JFileChooser. If the user approves the save,
+	 * the selected file will be overwritten with the current text in the JTextPane.
+	 * 
+	 * @param mntmNewMenuItem JMenuItem to which the save dialog will be attached.
+	 * @param jFile JFileChooser to be used for file selection.
+	 * @param frame JFrame that serves as the parent for the dialog.
+	 * @param textPane JTextPane whose contents will be saved.
 	 */
 	
-	public void saveDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame) {
+	public void saveDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
 		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 
-			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent e) {
-				int t = jFile.showSaveDialog(null);
+				int dialogSave = jFile.showSaveDialog(null);
 				
-				if (t == JFileChooser.APPROVE_OPTION) {
-					try (BufferedReader reader = Files.newBufferedReader(fileManager.getFilePath(jFile))) {
-						// ...
-						// ...
-						// ...
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				} else {
-					System.err.println();
+				if (dialogSave == JFileChooser.APPROVE_OPTION) {
+					fileManager.rewriteArchive(jFile, textPane);
 				}
 			}
 		});
