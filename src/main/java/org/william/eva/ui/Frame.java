@@ -16,6 +16,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -92,7 +94,7 @@ public class Frame {
 					frame.setSize(WIDTH, HEIGHT);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setLocationRelativeTo(null);			
-
+					
 					KeyAction btnAction = new KeyAction();
 					
 					JMenuBar menuBar = new JMenuBar();
@@ -100,6 +102,7 @@ public class Frame {
 					
 					JTextPane textPane = new JTextPane();
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
+
 					frame.getContentPane().add(textPane, BorderLayout.CENTER);
 
 					JPanel panel = new JPanel();
@@ -122,7 +125,14 @@ public class Frame {
 					menuBar.add(mnNewMenu_2);
 					
 					JMenuItem mntmNewMenuItem_3 = new JMenuItem("Run");
+					
+					btnAction.runProject(mntmNewMenuItem_3);
 					mnNewMenu_2.add(mntmNewMenuItem_3);
+					
+					JMenuItem mntmNewMenuItem_4 = new JMenuItem("Build");
+					
+					btnAction.buildProject(mntmNewMenuItem_4);
+					mnNewMenu_2.add(mntmNewMenuItem_4);
 					
 					JMenu mnNewMenu_1 = new JMenu("Window");
 					menuBar.add(mnNewMenu_1);

@@ -56,14 +56,14 @@ public class KeyAction {
 	
 	/**
 	 * Working in
-	 * @param mntmNewMenuItem_1
+	 * @param mntmNewMenuItem
 	 * @param jFile
 	 * @param frame
 	 */
 	
-	public void saveDialog(JMenuItem mntmNewMenuItem_1, JFileChooser jFile, JFrame frame) {
-		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+	public void saveDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame) {
+		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		mntmNewMenuItem.addActionListener(new ActionListener() {
 
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent e) {
@@ -82,5 +82,23 @@ public class KeyAction {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Working in
+	 * @param mntmNewMenuItem
+	 */
+	
+	public void runProject(JMenuItem mntmNewMenuItem) {
+		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
+	}
+	
+	/**
+	 * Working in
+	 * @param mntmNewMenuItem
+	 */
+	
+	public void buildProject(JMenuItem mntmNewMenuItem) {
+		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
 	}
 }
