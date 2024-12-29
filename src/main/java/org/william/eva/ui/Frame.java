@@ -52,6 +52,8 @@ import javax.swing.GroupLayout.Alignment;
 
 import org.william.eva.input.KeyAction;
 import org.william.eva.io.Config;
+import org.william.eva.io.file.FileEntity;
+import org.william.eva.io.file.FileManager;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -113,9 +115,16 @@ public class Frame {
 					menuBar.add(mnNewMenu);
 					
 					JMenuItem mntmNewMenuItem = new JMenuItem("Open");
-					
-					btnAction.openDialog(mntmNewMenuItem, jFile, frame, textPane);
 					mnNewMenu.add(mntmNewMenuItem);
+					mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+					mntmNewMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							btnAction.openDialog(mntmNewMenuItem, jFile, frame, textPane);
+						}
+						
+					});
 					
 					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
 					

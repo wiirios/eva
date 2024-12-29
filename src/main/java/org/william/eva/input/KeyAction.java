@@ -37,21 +37,14 @@ public class KeyAction {
 	 */
 	
 	public void openDialog(JMenuItem mntmNewMenuItem, JFileChooser jFile, JFrame frame, JTextPane textPane) {
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-		mntmNewMenuItem.addActionListener(new ActionListener() {
+		int dialogOpen = jFile.showOpenDialog(null);
+		
+		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
+			FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int dialogOpen = jFile.showOpenDialog(null);
-				
-				if (dialogOpen == JFileChooser.APPROVE_OPTION) {
-					FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
-
-					frame.setTitle(fileArchive.getName());
-					fileManager.writerTextPane(jFile, textPane);
-					}
-				}
-		});
+			frame.setTitle(fileArchive.getName());
+			fileManager.writerTextPane(jFile, textPane);
+		}
 	}
 	
 	/**
