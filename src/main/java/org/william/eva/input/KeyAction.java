@@ -38,6 +38,7 @@ public class KeyAction {
 		int dialogOpen = jFile.showOpenDialog(null);
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
+			textPane.setVisible(true);
 			FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
 
 			frame.setTitle(fileArchive.getName());

@@ -67,6 +67,7 @@ import javax.swing.JSplitPane;
 public class Frame {
 	private final int WIDTH = 400;
 	private final int HEIGHT = 300;
+	private boolean isOpen = false;
 	private JFrame frame;
 
 	public Frame() {
@@ -96,7 +97,7 @@ public class Frame {
 					frame = new JFrame();
 					frame.setSize(WIDTH, HEIGHT);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setLocationRelativeTo(null);			
+					frame.setLocationRelativeTo(null);
 					
 					KeyAction btnAction = new KeyAction();
 					
@@ -104,6 +105,7 @@ public class Frame {
 					frame.setJMenuBar(menuBar);
 					
 					JTextPane textPane = new JTextPane();
+					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
 
 					frame.getContentPane().add(textPane, BorderLayout.CENTER);
@@ -121,21 +123,26 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							isOpen = true;
 							btnAction.openDialog(jFile, frame, textPane);
 						}
 					});
 					
 					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
+					mnNewMenu.add(mntmNewMenuItem_1);
 					mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 					mntmNewMenuItem_1.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							btnAction.saveDialog(jFile, textPane);
+							if (isOpen == false) {
+								// working in terminal ....
+								System.out.println("error");
+							} else {
+								btnAction.saveDialog(jFile, textPane);
+							}
 						}
 					});
-					
-					mnNewMenu.add(mntmNewMenuItem_1);
 					
 					JMenu mnNewMenu_2 = new JMenu("Project");
 					menuBar.add(mnNewMenu_2);
