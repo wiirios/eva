@@ -4,9 +4,9 @@ import java.awt.Color;
 
 public enum Message {
 	ISOPEN("It is not possible to save a file without first opening one", 1, Color.RED),
-	OPENFILE("Open File:", 2, Color.GREEN),
-	CLOSEDFILE("Close File:", 3, Color.RED),
-	SAVEFILE("Save File:", 4, Color.BLUE);
+	OPENFILE("Open File", 2, Color.GREEN),
+	CLOSEDFILE("Close File", 3, Color.RED),
+	SAVEFILE("Save File", 4, Color.BLUE);
 	
 	private String message;
 	private int id;
