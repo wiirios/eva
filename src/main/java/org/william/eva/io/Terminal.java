@@ -4,11 +4,12 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.swing.JTextPane;
-
 public class Terminal {
 	private LocalDateTime dateLocal;
 	private StringBuilder stringBuilder;
+	
+	public final String label = "-- Eva Crash --";
+	public final int labelLength = label.length();
 	
 	/**
 	 * Logs an action performed on a file with a timestamp and returns the formatted log entry.
@@ -24,10 +25,21 @@ public class Terminal {
 	 */
 	
 	public String logFileAction(String message, String fileName) {
+		stringBuilder = new StringBuilder();
 		dateLocal = LocalDateTime.now(Clock.systemDefaultZone());
 		String customPattern = dateLocal.format(DateTimeFormatter.ofPattern("H:m:s"));
 		
 		stringBuilder.append(customPattern + ": " + message + ": " + fileName);
+		
+		return String.valueOf(stringBuilder);
+	}
+	
+	public String logError(String message) {
+		stringBuilder = new StringBuilder();
+		dateLocal = LocalDateTime.now(Clock.systemDefaultZone());
+		String customPattern = dateLocal.format(DateTimeFormatter.ofPattern("H:m:s"));
+		
+		stringBuilder.append(label + " " + customPattern + ": " + message);
 		
 		return String.valueOf(stringBuilder);
 	}
