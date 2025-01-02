@@ -8,6 +8,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
+import org.william.eva.io.Message;
+import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
 
@@ -24,17 +26,27 @@ public class KeyAction {
 	 * @param jFile The JFileChooser instance used to display the file dialog.
 	 * @param frame The JFrame whose title will be updated with the selected file's name.
 	 * @param textPane The JTextPane where the content of the selected file will be displayed.
+	 * @param textPane_1 The JTextPane where the content of the terminal error will be displayed.
 	 */
 	
-	public void openDialog(JFileChooser jFile, JFrame frame, JTextPane textPane) {
+	public void openDialog(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane textPane_1) {
 		int dialogOpen = jFile.showOpenDialog(null);
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
 			textPane.setVisible(true);
 			FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
-
-			frame.setTitle(fileArchive.getName());
-			textPane.setText(fileManager.writerTextPane(jFile));
+			String fileText = fileManager.writerTextPane(jFile);
+		
+			if (fileText.substring(0, new Terminal().labelLength).equals(new Terminal().label)) {
+				textPane_1.setText(fileText);
+			} else {
+				Terminal terminal = new Terminal();
+				Message openFileEnum = Message.OPENFILE;
+				
+				frame.setTitle(fileArchive.getName());
+				textPane.setText(fileText);
+				textPane_1.setText(terminal.logFileAction(openFileEnum.getMessage(), fileManager.getFileName(jFile)));
+			}			
 		}
 	}
 	
