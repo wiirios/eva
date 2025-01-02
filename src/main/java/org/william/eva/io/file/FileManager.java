@@ -3,13 +3,18 @@ package org.william.eva.io.file;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
+
+import org.william.eva.io.Config;
+import org.william.eva.io.Terminal;
 
 public class FileManager {
 	private final String dot = ".";
@@ -84,16 +89,16 @@ public class FileManager {
 	}
 	
 	/**
-	 * Reads the content of a file selected through a JFileChooser and writes it to a JTextPane.
+	 * Reads the content of a file selected through a JFileChooser and returns it as a String.
 	 * 
 	 * This method uses a BufferedReader to read the content of the file line by line and appends it to a 
-	 * StringBuilder. After reading the entire file, the content is set to the JTextPane as text.
+	 * StringBuilder. After reading the entire file, the content is returned as a single String.
 	 *
 	 * @param jFile The JFileChooser instance used to select the file.
-	 * @param textPane The JTextPane where the content of the file will be displayed.
+	 * @return A String containing the content of the selected file.
 	 */
 	
-	public void writerTextPane(JFileChooser jFile ,JTextPane textPane) {
+	public String writerTextPane(JFileChooser jFile) {
 		StringBuilder stringBuilder = new StringBuilder();
 		String line = null;
 		
@@ -102,10 +107,10 @@ public class FileManager {
 				stringBuilder.append(line);
 				stringBuilder.append("\r");
 			}
-			textPane.setText(String.valueOf(stringBuilder));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {			
+			e.printStackTrace();	
 		}
+		return String.valueOf(stringBuilder);
 	}
 	
 	/**
