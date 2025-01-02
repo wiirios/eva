@@ -15,7 +15,6 @@ import javax.swing.JTextPane;
 
 import org.william.eva.io.Config;
 import org.william.eva.io.Terminal;
-import org.william.eva.ui.Frame;
 
 public class FileManager {
 	private final String dot = ".";
@@ -109,7 +108,20 @@ public class FileManager {
 				stringBuilder.append("\r");
 			}
 		} catch (IOException e) {
-			return new Terminal().logError(String.valueOf(e));
+			Config config = new Config();
+			
+			try {
+				if (config.getProperties("fullerrorlog").equals("false")) {
+					return new Terminal().logError(String.valueOf(e));
+				} else {
+					StringWriter stringWriter = new StringWriter();
+					e.printStackTrace(new PrintWriter(stringWriter));
+					
+					return new Terminal().logError(String.valueOf(stringWriter));
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return String.valueOf(stringBuilder);
 	}
