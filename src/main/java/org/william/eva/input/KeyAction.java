@@ -34,7 +34,7 @@ public class KeyAction {
 			FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
 
 			frame.setTitle(fileArchive.getName());
-			fileManager.writerTextPane(jFile, textPane);
+			textPane.setText(fileManager.writerTextPane(jFile));
 		}
 	}
 	
