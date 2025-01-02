@@ -34,6 +34,17 @@ public class Terminal {
 		return String.valueOf(stringBuilder);
 	}
 	
+	/**
+	 * Logs an error message to the terminal with a timestamp.
+	 * 
+	 * This method formats the current time and appends it to the provided error message,  
+	 * creating a standardized log entry. The log entry is prefixed by a label and includes  
+	 * the time the error occurred.
+	 * 
+	 * @param message The error message to be logged.
+	 * @return A formatted string containing the label, timestamp, and the provided error message.
+	 */
+	
 	public String logError(String message) {
 		stringBuilder = new StringBuilder();
 		dateLocal = LocalDateTime.now(Clock.systemDefaultZone());
