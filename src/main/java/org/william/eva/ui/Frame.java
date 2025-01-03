@@ -4,72 +4,45 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import javax.swing.JScrollBar;
-import java.awt.Scrollbar;
-import javax.swing.JPanel;
-import java.awt.FlowLayout;
-import javax.swing.JLabel;
-import java.awt.Label;
 import java.awt.Component;
+import java.awt.Font;
+import javax.swing.JPanel;
 import javax.swing.Box;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SpringLayout;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import org.william.eva.input.KeyAction;
 import org.william.eva.io.Config;
-import org.william.eva.io.file.FileEntity;
+import org.william.eva.io.Message;
+import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileManager;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JEditorPane;
-import javax.swing.JSplitPane;
 
 public class Frame {
 	private final int WIDTH = 400;
 	private final int HEIGHT = 300;
 	private boolean isOpen = false;
 	private JFrame frame;
-
+	private Message isOpenEnum = Message.ISOPEN;
+	private Message openFileEnum = Message.OPENFILE;
+	private Message closeFileEnum = Message.CLOSEDFILE;
+	private Message saveFileEnum = Message.SAVEFILE;
+		
 	public Frame() {
 		initialize();
 	}
@@ -77,6 +50,9 @@ public class Frame {
 	private void initialize() {
 		JFileChooser jFile = new JFileChooser("c:");
 		Config config = new Config();
+		KeyAction btnAction = new KeyAction();
+		Terminal terminal = new Terminal();
+		FileManager fileManager = new FileManager();
 		
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
@@ -89,7 +65,7 @@ public class Frame {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}		
+		}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -99,19 +75,33 @@ public class Frame {
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setLocationRelativeTo(null);
 					
-					KeyAction btnAction = new KeyAction();
-					
 					JMenuBar menuBar = new JMenuBar();
 					frame.setJMenuBar(menuBar);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
 					JTextPane textPane = new JTextPane();
 					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
+										
+					JTextPane textPane_1 = new JTextPane();
+					textPane_1.setEnabled(false);
+					textPane_1.setEditable(false);
+					textPane_1.setFont(new Font("Courier New", Font.PLAIN, 12));
+					textPane_1.setBackground(new Color(36, 37, 43));
+					GroupLayout gl_panel = new GroupLayout(panel);
+					gl_panel.setHorizontalGroup(
+						gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+					);
+					gl_panel.setVerticalGroup(
+						gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+					);
+					panel.setLayout(gl_panel);
 
 					frame.getContentPane().add(textPane, BorderLayout.CENTER);
-
-					JPanel panel = new JPanel();
-					frame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
 					JMenu mnNewMenu = new JMenu("File");
 					menuBar.add(mnNewMenu);
@@ -121,10 +111,17 @@ public class Frame {
 					mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 					mntmNewMenuItem.addActionListener(new ActionListener() {
 
+						// Ensure that after pressing Ctrl+O and closing the file dialog without selecting a file, 
+						// the save action cannot be triggered unless a file is already open. Adjusted the `isOpen` 
+						// check to prevent unintended save operations.
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							isOpen = true;
-							btnAction.openDialog(jFile, frame, textPane);
+							btnAction.openDialog(jFile, frame, textPane, textPane_1);
+							
+							if (textPane.isVisible()) {
+								isOpen = true;
+							}
 						}
 					});
 					
@@ -135,11 +132,11 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							if (isOpen == false) {
-								// working in terminal ....
-								System.out.println("error");
+							if (isOpen == false) {		
+								textPane_1.setText(terminal.logError(isOpenEnum.getMessage()));
 							} else {
 								btnAction.saveDialog(jFile, textPane);
+								textPane_1.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
 							}
 						}
 					});
@@ -162,22 +159,7 @@ public class Frame {
 					
 					JMenuItem mntmNewMenuItem_2 = new JMenuItem("Preferences");
 					mnNewMenu_1.add(mntmNewMenuItem_2);
-					
-					JTextPane textPane_1 = new JTextPane();
-					textPane_1.setEnabled(true);
-					textPane_1.setEditable(false);
-					textPane_1.setBackground(new Color(36, 37, 43));
-					GroupLayout gl_panel = new GroupLayout(panel);
-					gl_panel.setHorizontalGroup(
-						gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-					);
-					gl_panel.setVerticalGroup(
-						gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-					);
-					panel.setLayout(gl_panel);
-					
+										
 					JPanel panel_1 = new JPanel();
 					frame.getContentPane().add(panel_1, BorderLayout.WEST);
 					panel_1.setLayout(new BorderLayout(0, 0));
