@@ -30,14 +30,13 @@ import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileManager;
 
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 
 public class Frame {
-	private final int WIDTH = 400;
-	private final int HEIGHT = 300;
+	private final int WIDTH = 800;
+	private final int HEIGHT = 600;
 	private boolean isOpen = false;
-	private JFrame frame;
+	private JFrame jFrame;
 	private Message isOpenEnum = Message.ISOPEN;
 	private Message openFileEnum = Message.OPENFILE;
 	private Message closeFileEnum = Message.CLOSEDFILE;
@@ -70,46 +69,46 @@ public class Frame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {				
-					frame = new JFrame();
-					frame.setSize(WIDTH, HEIGHT);
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setLocationRelativeTo(null);
+					jFrame = new JFrame();
+					jFrame.setSize(WIDTH, HEIGHT);
+					jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					jFrame.setLocationRelativeTo(null);
 					
 					JMenuBar menuBar = new JMenuBar();
-					frame.setJMenuBar(menuBar);
+					jFrame.setJMenuBar(menuBar);
 					
 					JPanel panel = new JPanel();
-					frame.getContentPane().add(panel, BorderLayout.SOUTH);
+					jFrame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
 					JTextPane textPane = new JTextPane();
 					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
 										
-					JTextPane textPane_1 = new JTextPane();
-					textPane_1.setEnabled(false);
-					textPane_1.setEditable(false);
-					textPane_1.setFont(new Font("Courier New", Font.PLAIN, 12));
-					textPane_1.setBackground(new Color(36, 37, 43));
+					JTextPane terminalPane = new JTextPane();
+					terminalPane.setEnabled(false);
+					terminalPane.setEditable(false);
+					terminalPane.setFont(new Font("Courier New", Font.PLAIN, 12));
+					terminalPane.setBackground(new Color(36, 37, 43));
 					GroupLayout gl_panel = new GroupLayout(panel);
 					gl_panel.setHorizontalGroup(
 						gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+							.addComponent(terminalPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
 					);
 					gl_panel.setVerticalGroup(
 						gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(textPane_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+							.addComponent(terminalPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
 					);
 					panel.setLayout(gl_panel);
 
-					frame.getContentPane().add(textPane, BorderLayout.CENTER);
+					jFrame.getContentPane().add(textPane, BorderLayout.CENTER);
 					
-					JMenu mnNewMenu = new JMenu("File");
-					menuBar.add(mnNewMenu);
+					JMenu fileMenu = new JMenu("File");
+					menuBar.add(fileMenu);
 					
-					JMenuItem mntmNewMenuItem = new JMenuItem("Open");
-					mnNewMenu.add(mntmNewMenuItem);
-					mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-					mntmNewMenuItem.addActionListener(new ActionListener() {
+					JMenuItem openMenuItem = new JMenuItem("Open");
+					fileMenu.add(openMenuItem);
+					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+					openMenuItem.addActionListener(new ActionListener() {
 
 						// Ensure that after pressing Ctrl+O and closing the file dialog without selecting a file, 
 						// the save action cannot be triggered unless a file is already open. Adjusted the `isOpen` 
@@ -117,51 +116,49 @@ public class Frame {
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							btnAction.openDialog(jFile, frame, textPane, textPane_1);
+							btnAction.openDialog(jFile, jFrame, textPane, terminalPane);
 							
-							if (textPane.isVisible()) {
-								isOpen = true;
-							}
+							if (textPane.isVisible()) isOpen = true;
 						}
 					});
 					
-					JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
-					mnNewMenu.add(mntmNewMenuItem_1);
-					mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-					mntmNewMenuItem_1.addActionListener(new ActionListener() {
+					JMenuItem saveMenuItem = new JMenuItem("Save");
+					fileMenu.add(saveMenuItem);
+					saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+					saveMenuItem.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							if (isOpen == false) {		
-								textPane_1.setText(terminal.logError(isOpenEnum.getMessage()));
+								terminalPane.setText(terminal.logError(isOpenEnum.getMessage()));
 							} else {
 								btnAction.saveDialog(jFile, textPane);
-								textPane_1.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
+								terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
 							}
 						}
 					});
 					
-					JMenu mnNewMenu_2 = new JMenu("Project");
-					menuBar.add(mnNewMenu_2);
+					JMenu projectMenu = new JMenu("Project");
+					menuBar.add(projectMenu);
 					
-					JMenuItem mntmNewMenuItem_3 = new JMenuItem("Run");
+					JMenuItem runMenuItem = new JMenuItem("Run");
 					
-					btnAction.runProject(mntmNewMenuItem_3);
-					mnNewMenu_2.add(mntmNewMenuItem_3);
+					btnAction.runProject(runMenuItem);
+					projectMenu.add(runMenuItem);
 					
-					JMenuItem mntmNewMenuItem_4 = new JMenuItem("Build");
+					JMenuItem buildMenuItem = new JMenuItem("Build");
 					
-					btnAction.buildProject(mntmNewMenuItem_4);
-					mnNewMenu_2.add(mntmNewMenuItem_4);
+					btnAction.buildProject(buildMenuItem);
+					projectMenu.add(buildMenuItem);
 					
-					JMenu mnNewMenu_1 = new JMenu("Window");
-					menuBar.add(mnNewMenu_1);
+					JMenu windowMenu = new JMenu("Window");
+					menuBar.add(windowMenu);
 					
-					JMenuItem mntmNewMenuItem_2 = new JMenuItem("Preferences");
-					mnNewMenu_1.add(mntmNewMenuItem_2);
+					JMenuItem preferencesMenuItem = new JMenuItem("Preferences");
+					windowMenu.add(preferencesMenuItem);
 										
 					JPanel panel_1 = new JPanel();
-					frame.getContentPane().add(panel_1, BorderLayout.WEST);
+					jFrame.getContentPane().add(panel_1, BorderLayout.WEST);
 					panel_1.setLayout(new BorderLayout(0, 0));
 					
 					JPanel panel_2 = new JPanel();
@@ -169,15 +166,12 @@ public class Frame {
 					panel_2.setLayout(new BorderLayout(0, 0));
 					
 					JScrollPane jScrollPane = new JScrollPane(textPane);
-					frame.getContentPane().add(jScrollPane);
+					jFrame.getContentPane().add(jScrollPane);
 					
 					Component horizontalStrut = Box.createHorizontalStrut(55);
 					jScrollPane.setRowHeaderView(horizontalStrut);
 					
-					JDialog jDialog = new JDialog(frame);
-					jDialog.setTitle("Preferences");
-					jDialog.setSize(WIDTH, HEIGHT);
-					frame.setVisible(true);
+					jFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
