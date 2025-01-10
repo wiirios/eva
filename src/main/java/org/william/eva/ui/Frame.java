@@ -155,7 +155,7 @@ public class Frame {
 					menuBar.add(windowMenu);
 					
 					JMenuItem preferencesMenuItem = new JMenuItem("Preferences");
-					preferencesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
+					preferencesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK | KeyEvent.ALT_DOWN_MASK));
 					preferencesMenuItem.addActionListener(new ActionListener() {
 
 						@Override
