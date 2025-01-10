@@ -33,8 +33,8 @@ import org.william.eva.io.file.FileManager;
 import javax.swing.JScrollPane;
 
 public class Frame {
-	private final int WIDTH = 800;
 	private final int HEIGHT = 600;
+	private final int WIDTH = HEIGHT * 16 / 9;
 	private boolean isOpen = false;
 	private JFrame jFrame;
 	private Message isOpenEnum = Message.ISOPEN;
@@ -155,6 +155,15 @@ public class Frame {
 					menuBar.add(windowMenu);
 					
 					JMenuItem preferencesMenuItem = new JMenuItem("Preferences");
+					preferencesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
+					preferencesMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							new Dialog(jFrame);					
+						}
+						
+					});
 					windowMenu.add(preferencesMenuItem);
 										
 					JPanel panel_1 = new JPanel();
