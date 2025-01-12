@@ -91,25 +91,22 @@ public class Frame {
 
 						@Override
 						public void keyTyped(KeyEvent e) {
-							// TODO Auto-generated method stub
 							
 						}
 
 						@Override
 						public void keyPressed(KeyEvent e) {
-							// TODO Auto-generated method stub
 							if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
 								isControlDown = true;
 							}
 							
 							if (e.getKeyCode() == KeyEvent.VK_Z && isControlDown == true) {
-								System.out.println("teste");
 							}
 						}
 
 						@Override
 						public void keyReleased(KeyEvent e) {
-							// TODO Auto-generated method stub
+							
 							isControlDown = false;
 						}
 						
