@@ -3,7 +3,10 @@ package org.william.eva.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -36,6 +39,7 @@ public class Frame {
 	private final int HEIGHT = 600;
 	private final int WIDTH = HEIGHT * 16 / 9;
 	private boolean isOpen = false;
+	private static boolean isControlDown = false;
 	private JFrame jFrame;
 	private Message isOpenEnum = Message.ISOPEN;
 	private Message openFileEnum = Message.OPENFILE;
@@ -83,6 +87,33 @@ public class Frame {
 					JTextPane textPane = new JTextPane();
 					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
+					textPane.addKeyListener(new KeyListener() {
+
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							// TODO Auto-generated method stub
+							if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+								isControlDown = true;
+							}
+							
+							if (e.getKeyCode() == KeyEvent.VK_Z && isControlDown == true) {
+								System.out.println("teste");
+							}
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							// TODO Auto-generated method stub
+							isControlDown = false;
+						}
+						
+					});
 										
 					JTextPane terminalPane = new JTextPane();
 					terminalPane.setEnabled(false);
