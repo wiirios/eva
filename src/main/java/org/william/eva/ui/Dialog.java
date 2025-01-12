@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 
 public class Dialog extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private final int HEIGHT = 300;
-	private final int WIDTH = HEIGHT * 16 / 9;
+	private static final int HEIGHT = 300;
+	private static final int WIDTH = HEIGHT * 16 / 9;
 	private String dialogTitle = "Preferences";
 	
 	private String[] languages = new String[] {"EN", "PT"};

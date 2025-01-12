@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Terminal {
-	private LocalDateTime dateLocal;
-	private StringBuilder stringBuilder;
+	private static LocalDateTime dateLocal;
+	private static StringBuilder stringBuilder;
 	
 	public final String label = "-- Eva Crash --";
 	public final int labelLength = label.length();

@@ -14,7 +14,7 @@ import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
 
 public class KeyAction {
-	FileManager fileManager = new FileManager();
+	private static FileManager fileManager = new FileManager();
 	
 	/**
 	 * Opens a file dialog and handles file selection.

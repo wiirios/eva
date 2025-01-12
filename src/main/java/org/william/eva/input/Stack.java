@@ -3,8 +3,8 @@ package org.william.eva.input;
 import java.util.ArrayList;
 
 public class Stack {
-	private ArrayList<Character> stack = new ArrayList<Character>();
-	private int stackLength = 0;
+	private static ArrayList<Character> stack = new ArrayList<Character>();
+	private static int stackLength = 0;
 	private static boolean isEmpty = true;
 	
 	public Stack() {}
@@ -19,10 +19,9 @@ public class Stack {
 	public void pop() {
 		if (empty() == false) {
 			stack.remove(stackLength-1);
+
+			if (stackLength == 1) isEmpty = true;
 			
-			if (stackLength == 1) {
-				isEmpty = true;
-			}
 			stackLength--;
 		}
 	}

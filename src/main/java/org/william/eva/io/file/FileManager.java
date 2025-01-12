@@ -17,7 +17,7 @@ import org.william.eva.io.Config;
 import org.william.eva.io.Terminal;
 
 public class FileManager {
-	private final String dot = ".";
+	private static final String dot = ".";
 	
 	public FileManager() {}
 	

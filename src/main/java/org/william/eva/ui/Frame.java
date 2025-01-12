@@ -28,6 +28,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import org.william.eva.input.KeyAction;
+import org.william.eva.input.Stack;
 import org.william.eva.io.Config;
 import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
@@ -36,11 +37,15 @@ import org.william.eva.io.file.FileManager;
 import javax.swing.JScrollPane;
 
 public class Frame {
-	private final int HEIGHT = 600;
-	private final int WIDTH = HEIGHT * 16 / 9;
-	private boolean isOpen = false;
+	private static final int HEIGHT = 600;
+	private static final int WIDTH = HEIGHT * 16 / 9;
+	
+	private static boolean isOpen = false;
 	private static boolean isControlDown = false;
+	private int lastModifier;
+	
 	private JFrame jFrame;
+	
 	private Message isOpenEnum = Message.ISOPEN;
 	private Message openFileEnum = Message.OPENFILE;
 	private Message closeFileEnum = Message.CLOSEDFILE;
@@ -56,6 +61,7 @@ public class Frame {
 		KeyAction btnAction = new KeyAction();
 		Terminal terminal = new Terminal();
 		FileManager fileManager = new FileManager();
+		Stack stack = new Stack();
 		
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
@@ -88,10 +94,14 @@ public class Frame {
 					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
 					textPane.addKeyListener(new KeyListener() {
-
+						
 						@Override
 						public void keyTyped(KeyEvent e) {
+							stack.push(e.getKeyChar());
 							
+							if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+								lastModifier = e.getKeyChar();
+							}
 						}
 
 						@Override
@@ -101,12 +111,14 @@ public class Frame {
 							}
 							
 							if (e.getKeyCode() == KeyEvent.VK_Z && isControlDown == true) {
+								if (lastModifier == KeyEvent.VK_BACK_SPACE) {
+									
+								}
 							}
 						}
 
 						@Override
-						public void keyReleased(KeyEvent e) {
-							
+						public void keyReleased(KeyEvent e) {							
 							isControlDown = false;
 						}
 						
