@@ -2,15 +2,15 @@ package org.william.eva.input;
 
 import java.util.ArrayList;
 
-public class Stack<T> {
-	private ArrayList<T> stack = new ArrayList<T>();
+public class Stack {
+	private ArrayList<Character> stack = new ArrayList<Character>();
 	private int stackLength = 0;
 	private static boolean isEmpty = true;
 	
 	public Stack() {}
 
-	public void push(T value) {
-		stack.add(value);
+	public void push(char c) {
+		stack.add(c);
 		isEmpty = false;
 		
 		if (empty() == false) stackLength++;
@@ -28,16 +28,16 @@ public class Stack<T> {
 	}
 	
 	public void getAll() {		
-		for (T i:stack) {
+		for (char i:stack) {
 			System.out.println(i);
 		}
 	}
 	
-	public T peek() {
+	public char peek() {
 		if (empty() == false) {
 			return stack.get(stackLength-1);
 		}
-		return null;
+		return ' ';
 	}
 	
 	public static boolean empty() {
