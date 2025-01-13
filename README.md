@@ -20,11 +20,11 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
    cd eva
    ```
 3. Build and run the project:
-``` bash
+	``` bash
 	mvn clean compile
 	mvn dependency:copy-dependencies
 	java -cp "target/classes;target/dependency/*" org.william.eva.Main
-```
+	```
 
 ## Roadmap
 
