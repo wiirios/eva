@@ -45,6 +45,12 @@ public class Frame {
 	private int lastModifier;
 	
 	private JFrame jFrame;
+	private JFileChooser jFile;
+	private Config config;
+	private KeyAction btnAction;
+	private Terminal terminal;
+	private FileManager fileManager;
+	private Stack stack;
 	
 	private Message isOpenEnum = Message.ISOPEN;
 	private Message openFileEnum = Message.OPENFILE;
@@ -56,16 +62,16 @@ public class Frame {
 	}
 
 	private void initialize() {
-		JFileChooser jFile = new JFileChooser("c:");
-		Config config = new Config();
-		KeyAction btnAction = new KeyAction();
-		Terminal terminal = new Terminal();
-		FileManager fileManager = new FileManager();
-		Stack stack = new Stack();
+		jFile = new JFileChooser("c:");
+		config = new Config("./src/main/resources/config.properties");
+		btnAction = new KeyAction();
+		terminal = new Terminal();
+		fileManager = new FileManager();
+		stack = new Stack();
 		
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
-
+		
 		try {
 			if (config.getSystemTheme() == 0) {
 				UIManager.setLookAndFeel(new FlatDarkLaf());
@@ -169,7 +175,7 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							if (isOpen == false) {		
+							if (!isOpen) {		
 								terminalPane.setText(terminal.logError(isOpenEnum.getMessage()));
 							} else {
 								btnAction.saveDialog(jFile, textPane);
