@@ -8,7 +8,11 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Config  {
-	private final String propertiesPath = "./src/main/resources/config.properties";
+	private String propertiesPath;
+	
+	public Config(String propertiesPath) {
+		this.propertiesPath = propertiesPath;
+	}
 	
 	/**
 	 * Retrieves a specified configuration value from a properties file.

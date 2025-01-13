@@ -11,6 +11,8 @@ public class Terminal {
 	public final String label = "-- Eva Crash --";
 	public final int labelLength = label.length();
 	
+	public Terminal() {}
+	
 	/**
 	 * Logs an action performed on a file with a timestamp and returns the formatted log entry.
 	 * This method captures the current system time and formats it in hours, minutes, and seconds.

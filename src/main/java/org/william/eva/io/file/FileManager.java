@@ -18,6 +18,7 @@ import org.william.eva.io.Terminal;
 
 public class FileManager {
 	private static final String dot = ".";
+	private Config config;
 	
 	public FileManager() {}
 	
@@ -108,7 +109,7 @@ public class FileManager {
 				stringBuilder.append("\r");
 			}
 		} catch (IOException e) {
-			Config config = new Config();
+			config = new Config("./src/main/resources/config.properties");
 			
 			try {
 				if (config.getProperties("fullerrorlog").equals("false")) {

@@ -14,6 +14,8 @@ import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
 
 public class KeyAction {
+	public KeyAction() {}
+	
 	private static FileManager fileManager = new FileManager();
 	
 	/**
