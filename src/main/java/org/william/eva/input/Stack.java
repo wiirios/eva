@@ -74,7 +74,7 @@ public class Stack {
 	 * @return true if the stack is empty, false otherwise
 	 */
 	
-	private static boolean empty() {
+	public static boolean empty() {
 		return isEmpty;
 	}
 	
@@ -84,7 +84,7 @@ public class Stack {
 	 * @return the length of the stack
 	 */
 	
-	private static int length() {
+	public static int length() {
 		return stackLength;
 	}
 }

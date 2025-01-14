@@ -3,9 +3,7 @@ package org.william.eva.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -28,7 +26,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import org.william.eva.input.KeyAction;
-import org.william.eva.input.Stack;
+import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
 import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
@@ -39,10 +37,17 @@ import javax.swing.JScrollPane;
 public class Frame {
 	private static final int HEIGHT = 600;
 	private static final int WIDTH = HEIGHT * 16 / 9;
-	
+		
 	private static boolean isOpen = false;
-	private static boolean isControlDown = false;
-	private int lastModifier;
+	
+	/**
+	 *  I'll probably still use these variables
+	 */
+	
+	// private static boolean isControlDown = false;
+	// private static int lastModifier, lastBackSpace; 
+	
+	public static boolean hasTyped;
 	
 	private JFrame jFrame;
 	private JFileChooser jFile;
@@ -50,11 +55,11 @@ public class Frame {
 	private KeyAction btnAction;
 	private Terminal terminal;
 	private FileManager fileManager;
-	private Stack stack;
+	// private Undo undo;
 	
 	private Message isOpenEnum = Message.ISOPEN;
-	private Message openFileEnum = Message.OPENFILE;
-	private Message closeFileEnum = Message.CLOSEDFILE;
+	// private Message openFileEnum = Message.OPENFILE;
+	// private Message closeFileEnum = Message.CLOSEDFILE;
 	private Message saveFileEnum = Message.SAVEFILE;
 		
 	public Frame() {
@@ -67,8 +72,7 @@ public class Frame {
 		btnAction = new KeyAction();
 		terminal = new Terminal();
 		fileManager = new FileManager();
-		stack = new Stack();
-		
+
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
 		
@@ -84,7 +88,7 @@ public class Frame {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {				
+				try {
 					jFrame = new JFrame();
 					jFrame.setSize(WIDTH, HEIGHT);
 					jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,45 +100,19 @@ public class Frame {
 					JPanel panel = new JPanel();
 					jFrame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
-					JTextPane textPane = new JTextPane();
-					textPane.setVisible(false);
-					textPane.setFont(new Font("Consolas", Font.PLAIN, 14));
-					textPane.addKeyListener(new KeyListener() {
-						
-						@Override
-						public void keyTyped(KeyEvent e) {
-							stack.push(e.getKeyChar());
-							
-							if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
-								lastModifier = e.getKeyChar();
-							}
-						}
-
-						@Override
-						public void keyPressed(KeyEvent e) {
-							if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
-								isControlDown = true;
-							}
-							
-							if (e.getKeyCode() == KeyEvent.VK_Z && isControlDown == true) {
-								if (lastModifier == KeyEvent.VK_BACK_SPACE) {
-									
-								}
-							}
-						}
-
-						@Override
-						public void keyReleased(KeyEvent e) {							
-							isControlDown = false;
-						}
-						
-					});
-										
 					JTextPane terminalPane = new JTextPane();
 					terminalPane.setEnabled(false);
 					terminalPane.setEditable(false);
 					terminalPane.setFont(new Font("Courier New", Font.PLAIN, 12));
 					terminalPane.setBackground(new Color(36, 37, 43));
+					
+					JTextPane textPane = new JTextPane();
+					textPane.setVisible(false);
+					textPane.setFont(new Font("Consolas", Font.PLAIN, 14)); 
+					
+					// Create undo
+					// undo = new Undo(textPane);
+					
 					GroupLayout gl_panel = new GroupLayout(panel);
 					gl_panel.setHorizontalGroup(
 						gl_panel.createParallelGroup(Alignment.LEADING)
