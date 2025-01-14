@@ -3,10 +3,12 @@ package org.william.eva.input;
 import java.util.ArrayList;
 
 // PS: I am likely going to change many of these methods to private later. (i guess)
+// This will take longer than I thought
 
 public class Stack {
 	private static ArrayList<Character> stack = new ArrayList<Character>();
 	private static int stackLength = 0;
+	private static int stackLimit = 50;
 	private static boolean isEmpty = true;
 	
 	public Stack() {}
@@ -17,7 +19,12 @@ public class Stack {
 	 * @param c the character to add to the stack
 	 */
 
-	public void push(char c) {
+	public void push(char c) {		
+		if(length() >= stackLimit) {
+			stack.remove(0);
+			stackLength--;
+		}
+		
 		stack.add(c);
 		isEmpty = false;
 		
@@ -67,7 +74,7 @@ public class Stack {
 	 * @return true if the stack is empty, false otherwise
 	 */
 	
-	public static boolean empty() {
+	private static boolean empty() {
 		return isEmpty;
 	}
 	
@@ -77,7 +84,7 @@ public class Stack {
 	 * @return the length of the stack
 	 */
 	
-	public int length() {
+	private static int length() {
 		return stackLength;
 	}
 }
