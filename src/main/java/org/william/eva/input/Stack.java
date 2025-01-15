@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Stack {
 	private ArrayList<Character> stack = new ArrayList<Character>();
 	private int stackLength = 0;
-	private int stackLimit = 50;
+	/** both the stack that will contain the keys that the user types and the keys that the user deleted will have a limit of 50 characters (this is kind of obvious but whatever) */
+	private static int stackLimit = 50;
 	private boolean isEmpty = true;
 	
 	public Stack() {}
@@ -17,7 +18,7 @@ public class Stack {
 	 */
 
 	public void push(char c) {	
-		if (length() > stackLimit) {
+		if (length() >= stackLimit) {
 			stack.remove(0);
 			stackLength--;
 		}
