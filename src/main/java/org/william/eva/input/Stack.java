@@ -85,4 +85,14 @@ public class Stack {
 	public int length() {
 		return stackLength;
 	}
+	
+	/**
+	 * clear the stack
+	 */
+	
+	public void clear() {
+		stack.clear();
+		isEmpty = true;
+		stackLength = 0;
+	}
 }
