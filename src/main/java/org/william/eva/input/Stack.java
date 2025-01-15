@@ -2,14 +2,11 @@ package org.william.eva.input;
 
 import java.util.ArrayList;
 
-// PS: I am likely going to change many of these methods to private later. (i guess)
-// This will take longer than I thought
-
 public class Stack {
-	private static ArrayList<Character> stack = new ArrayList<Character>();
-	private static int stackLength = 0;
-	private static int stackLimit = 50;
-	private static boolean isEmpty = true;
+	private ArrayList<Character> stack = new ArrayList<Character>();
+	private int stackLength = 0;
+	private int stackLimit = 50;
+	private boolean isEmpty = true;
 	
 	public Stack() {}
 	
@@ -19,40 +16,41 @@ public class Stack {
 	 * @param c the character to add to the stack
 	 */
 
-	public void push(char c) {		
-		if(length() >= stackLimit) {
+	public void push(char c) {	
+		if (length() > stackLimit) {
 			stack.remove(0);
 			stackLength--;
 		}
 		
 		stack.add(c);
 		isEmpty = false;
-		
-		if (empty() == false) stackLength++;
-	}	
+		stackLength++;
+	}
 	
 	/**
 	 * Removes the last character from the stack, if the stack is not empty.
 	 */
 	
 	public void pop() {
-		if (empty() == false) {
+		if (!empty()) {
 			stack.remove(stackLength-1);
-
-			if (stackLength == 1) isEmpty = true;
-			
 			stackLength--;
+			isEmpty = stackLength == 0;
 		}
 	}
 	
 	/**
-	 * Prints all characters currently in the stack.
+	 * get all characters currently in the stack.
 	 */
 	
-	public void getAll() {		
+	public String getAll() {	
+		StringBuilder ch = new StringBuilder();
+		
 		for (char i:stack) {
-			System.out.println(i);
+			ch.append(i);
 		}
+		
+		return String.valueOf(ch);
 	}
 	
 	/**
@@ -74,7 +72,7 @@ public class Stack {
 	 * @return true if the stack is empty, false otherwise
 	 */
 	
-	public static boolean empty() {
+	public boolean empty() {
 		return isEmpty;
 	}
 	
@@ -84,7 +82,7 @@ public class Stack {
 	 * @return the length of the stack
 	 */
 	
-	public static int length() {
+	public int length() {
 		return stackLength;
 	}
 }
