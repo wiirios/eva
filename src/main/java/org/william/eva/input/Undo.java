@@ -3,48 +3,49 @@ package org.william.eva.input;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
-import org.william.eva.ui.Frame;
 
 public class Undo {	
 	private JTextPane textPane;
-	private Stack stack;
-	private Document document;
-	
-	private boolean isControlDown;
+    private Stack stack;
+    // private Stack stackRemoved;
+    private Document document;
+    
+    private boolean isControlDown;
 	
 	public Undo(JTextPane textPane) {
 		this.textPane = textPane;
 		this.stack = new Stack();
+		// this.stackRemoved = new Stack();
 		this.document = textPane.getDocument();
 		this.isControlDown = false;
 		
-		textPane.addKeyListener(new KeyListener() {
-
+		textPane.addKeyListener(new KeyListener() {			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
 				
-				if (!Character.isISOControl(c)) stack.push(c);
+				if (!Character.isISOControl(c)) {
+					stack.push(c);
+					// stackRemoved.clear();
+				}
 			}
 			
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent e) {				
 				if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) isControlDown = true;
-				
-				if (isControlDown & e.getKeyCode() == KeyEvent.VK_Z) {
-				}
-			}
 
+				if (isControlDown & e.getKeyCode() == KeyEvent.VK_Z) undo();
+			}		
+			
 			@Override
 			public void keyReleased(KeyEvent e) {
 				isControlDown = false;
-			}
-			
+			}						
 		});
+		
 	}
 	
 	public JTextPane getTextPane() {
@@ -54,8 +55,19 @@ public class Undo {
 	public void setTextPane(JTextPane textPane) {
 		this.textPane = textPane;
 	}
-	
-	public boolean canUndo() {
-		return Frame.hasTyped;
+
+	private void undo() {
+		if (!stack.empty()) {
+			try {
+				stack.pop();
+
+                int docLength = document.getLength();
+                if (docLength > 0) {
+                    document.remove(docLength - 1, 1);
+                }
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}				
+		}
 	}
 }

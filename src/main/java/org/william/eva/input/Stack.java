@@ -34,7 +34,7 @@ public class Stack {
 	
 	public void pop() {
 		if (!empty()) {
-			stack.remove(stackLength-1);
+			stack.remove(stackLength - 1);
 			stackLength--;
 			isEmpty = stackLength == 0;
 		}
@@ -83,7 +83,7 @@ public class Stack {
 	 * @return the length of the stack
 	 */
 	
-	public int length() {
+	private int length() {
 		return stackLength;
 	}
 	

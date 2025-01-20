@@ -40,22 +40,13 @@ public class Frame {
 		
 	private static boolean isOpen = false;
 	
-	/**
-	 *  I'll probably still use these variables
-	 */
-	
-	// private static boolean isControlDown = false;
-	// private static int lastModifier, lastBackSpace; 
-	
-	public static boolean hasTyped;
-	
 	private JFrame jFrame;
 	private JFileChooser jFile;
 	private Config config;
 	private KeyAction btnAction;
 	private Terminal terminal;
 	private FileManager fileManager;
-	// private Undo undo;
+	private Undo undo;
 	
 	private Message isOpenEnum = Message.ISOPEN;
 	// private Message openFileEnum = Message.OPENFILE;
@@ -110,8 +101,8 @@ public class Frame {
 					textPane.setVisible(false);
 					textPane.setFont(new Font("Consolas", Font.PLAIN, 14)); 
 					
-					// Create undo
-					// undo = new Undo(textPane);
+					// create undo
+					undo = new Undo(textPane);
 					
 					GroupLayout gl_panel = new GroupLayout(panel);
 					gl_panel.setHorizontalGroup(
