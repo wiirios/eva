@@ -55,6 +55,11 @@ public class Undo {
 	public void setTextPane(JTextPane textPane) {
 		this.textPane = textPane;
 	}
+	
+	/**
+	 * Performs an undo operation by removing the last character from the stack 
+	 * and the document if they are not empty.
+	 */
 
 	private void undo() {
 		if (!stack.empty()) {
