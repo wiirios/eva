@@ -4,11 +4,15 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
 
 > [!IMPORTANT]
 > This project is a work in progress. Contributions and feedback are welcome!
-> 
+
+> [!WARNING]
+> Linux and macOS users might encounter issues while using the application. Some features are not yet implemented on these platforms. If you experience any problems, please consider opening an issue.
+
 ## Getting Started
 
 ### Prerequisites
 - Java Development Kit (JDK) 8 or higher
+- Maven
 
 ### Installation
 1. Clone this repository:
