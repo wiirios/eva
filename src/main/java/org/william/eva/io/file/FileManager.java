@@ -2,7 +2,6 @@ package org.william.eva.io.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.io.IOException;
@@ -33,8 +32,9 @@ public class FileManager {
 	 */
 	
 	public String getFileName(JFileChooser jFile) {
-		String fileName = jFile.getName(jFile.getSelectedFile());
-		return fileName;
+		if (jFile != null) return jFile.getName(jFile.getSelectedFile());
+		
+		return null;
 	}
 	
 	/**
@@ -49,7 +49,9 @@ public class FileManager {
 	
 	public String getFileExtension(JFileChooser jFile) {
 		String fileExtension = getFileName(jFile);
-		return fileExtension.substring(fileExtension.indexOf(dot));
+		if (jFile != null) return fileExtension.substring(fileExtension.indexOf(dot));
+		
+		return null;
 	}
 	
 	/**
@@ -63,9 +65,9 @@ public class FileManager {
 	 */
 	
 	public Path getFilePath(JFileChooser jFile) {
-		File fileSelected = jFile.getSelectedFile();
-		Path filePath = Paths.get(String.valueOf(fileSelected));
-		return filePath;
+		if (jFile != null) return Paths.get(String.valueOf(jFile.getSelectedFile()));
+		
+		return null;
 	}
 	
 	/**
