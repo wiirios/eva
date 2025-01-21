@@ -37,8 +37,6 @@ import javax.swing.JScrollPane;
 public class Frame {
 	private static final int HEIGHT = 600;
 	private static final int WIDTH = HEIGHT * 16 / 9;
-		
-	private static boolean isOpen = false;
 	
 	private JFrame jFrame;
 	private JFileChooser jFile;
@@ -60,7 +58,6 @@ public class Frame {
 	private void initialize() {
 		jFile = new JFileChooser("c:");
 		config = new Config("./src/main/resources/config.properties");
-		btnAction = new KeyAction();
 		terminal = new Terminal();
 		fileManager = new FileManager();
 
@@ -124,16 +121,10 @@ public class Frame {
 					fileMenu.add(openMenuItem);
 					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 					openMenuItem.addActionListener(new ActionListener() {
-
-						// Ensure that after pressing Ctrl+O and closing the file dialog without selecting a file, 
-						// the save action cannot be triggered unless a file is already open. Adjusted the `isOpen` 
-						// check to prevent unintended save operations.
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							btnAction.openDialog(jFile, jFrame, textPane, terminalPane);
-							
-							if (textPane.isVisible()) isOpen = true;
+							btnAction.openDialog();
 						}
 					});
 					
@@ -144,27 +135,40 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							if (!isOpen) {		
-								terminalPane.setText(terminal.logError(isOpenEnum.getMessage()));
-							} else {
-								btnAction.saveDialog(jFile, textPane);
-								terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
-							}
+							btnAction.saveDialog();
+							terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
+							
 						}
 					});
+					
+					btnAction = new KeyAction(jFile, jFrame, textPane, terminalPane);
 					
 					JMenu projectMenu = new JMenu("Project");
 					menuBar.add(projectMenu);
 					
 					JMenuItem runMenuItem = new JMenuItem("Run");
-					
-					btnAction.runProject(runMenuItem);
 					projectMenu.add(runMenuItem);
+					runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
+					runMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// btnAction.runProject();
+						}
+						
+					});
 					
 					JMenuItem buildMenuItem = new JMenuItem("Build");
-					
-					btnAction.buildProject(buildMenuItem);
 					projectMenu.add(buildMenuItem);
+					buildMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+					buildMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// btnAction.buildProject();
+						}
+						
+					});
 					
 					JMenu windowMenu = new JMenu("Window");
 					menuBar.add(windowMenu);

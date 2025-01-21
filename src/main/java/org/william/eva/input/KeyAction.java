@@ -12,42 +12,54 @@ import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
+import org.william.eva.runner.Run;
 
 public class KeyAction {
-	public KeyAction() {}
-	
+	private JFileChooser jFile;
+	private JFrame frame;
+	private JTextPane textPane;
+	private JTextPane terminalPane;
+
 	private static FileManager fileManager = new FileManager();
+	private Terminal terminal = new Terminal();
 	
+	/* for now only support .java */
+	private String[] extensionsList = new String[]{".java"};
+	
+	private FileEntity fileArchive;
+	private FileEntity fileRunnable;
+	
+	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
+		this.jFile = jFile;
+		this.frame = frame;
+		this.textPane = textPane;
+		this.terminalPane = terminalPane;
+	}
+
 	/**
 	 * Opens a file dialog and handles file selection.
 	 * 
 	 * This method displays a file chooser dialog when triggered. If a file is selected, the frame's title 
 	 * is updated with the file name, and the file's content is loaded into the provided JTextPane. 
 	 * The file chooser is configured to allow the user to browse and open files.
-	 * 
-	 * @param jFile The JFileChooser instance used to display the file dialog.
-	 * @param frame The JFrame whose title will be updated with the selected file's name.
-	 * @param textPane The JTextPane where the content of the selected file will be displayed.
-	 * @param textPane_1 The JTextPane where the content of the terminal error will be displayed.
 	 */
 	
-	public void openDialog(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane textPane_1) {
-		int dialogOpen = jFile.showOpenDialog(null);
+	public void openDialog() {
+		int dialogOpen = this.jFile.showOpenDialog(null);
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
-			textPane.setVisible(true);
-			FileEntity fileArchive = new FileEntity(fileManager.getFileName(jFile), fileManager.getFileExtension(jFile), fileManager.getFilePath(jFile), fileManager.getFileSize(jFile));
-			String fileText = fileManager.writerTextPane(jFile);
+			fileArchive = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
+			String fileText = fileManager.writerTextPane(this.jFile);
 		
-			if (fileText.substring(0, new Terminal().labelLength).equals(new Terminal().label)) {
-				textPane_1.setText(fileText);
+			if (fileText.substring(0, terminal.labelLength).equals(terminal.label)) {
+				terminalPane.setText(fileText);
 			} else {
-				Terminal terminal = new Terminal();
 				Message openFileEnum = Message.OPENFILE;
 				
 				frame.setTitle(fileArchive.getName());
+				textPane.setVisible(true);
 				textPane.setText(fileText);
-				textPane_1.setText(terminal.logFileAction(openFileEnum.getMessage(), fileManager.getFileName(jFile)));
+				terminalPane.setText(terminal.logFileAction(openFileEnum.getMessage(), fileManager.getFileName(this.jFile)));
 			}			
 		}
 	}
@@ -58,31 +70,25 @@ public class KeyAction {
 	 * This method displays a save dialog using JFileChooser. If the user approves the save operation, 
 	 * the contents of the JTextPane are written to the selected file, overwriting any existing content. 
 	 * The file chooser allows the user to specify the location and name of the file to be saved.
-	 * 
-	 * @param jFile The JFileChooser instance used to display the save dialog.
-	 * @param textPane The JTextPane whose contents will be saved to the selected file.
 	 */
 	
-	public void saveDialog(JFileChooser jFile, JTextPane textPane) {
-		int dialogSave = jFile.showSaveDialog(null);
+	public void saveDialog() {
+		int dialogSave = this.jFile.showSaveDialog(null);
 		
 		if (dialogSave == JFileChooser.APPROVE_OPTION) {
-			fileManager.rewriteArchive(jFile, textPane);
+			fileManager.rewriteArchive(this.jFile, this.textPane);
 		}
 	}
 	
 	/**
 	 * Working in
-	 * @param mntmNewMenuItem
 	 */
 	
-	public void runProject(JMenuItem mntmNewMenuItem) {
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
+	public void runProject() {
 	}
 	
 	/**
 	 * Working in
-	 * @param mntmNewMenuItem
 	 */
 	
 	public void buildProject(JMenuItem mntmNewMenuItem) {
