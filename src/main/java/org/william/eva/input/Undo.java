@@ -61,7 +61,7 @@ public class Undo {
 	 * and the document if they are not empty.
 	 */
 
-	private void undo() {
+	protected void undo() {
 		if (!stack.empty()) {
 			try {
 				stack.pop();

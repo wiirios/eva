@@ -17,7 +17,7 @@ public class Stack {
 	 * @param c the character to add to the stack
 	 */
 
-	public void push(char c) {	
+	protected void push(char c) {	
 		if (length() >= stackLimit) {
 			stack.remove(0);
 			stackLength--;
@@ -32,7 +32,7 @@ public class Stack {
 	 * Removes the last character from the stack, if the stack is not empty.
 	 */
 	
-	public void pop() {
+	protected void pop() {
 		if (!empty()) {
 			stack.remove(stackLength - 1);
 			stackLength--;
@@ -44,7 +44,7 @@ public class Stack {
 	 * get all characters currently in the stack.
 	 */
 	
-	public String getAll() {	
+	protected String getAll() {	
 		StringBuilder ch = new StringBuilder();
 		
 		for (char i:stack) {
@@ -60,7 +60,7 @@ public class Stack {
 	 * @return the last character in the stack, or a space character if the stack is empty
 	 */
 	
-	public char peek() {
+	protected char peek() {
 		if (empty() == false) {
 			return stack.get(stackLength-1);
 		}
@@ -73,7 +73,7 @@ public class Stack {
 	 * @return true if the stack is empty, false otherwise
 	 */
 	
-	public boolean empty() {
+	protected boolean empty() {
 		return isEmpty;
 	}
 	
@@ -91,7 +91,7 @@ public class Stack {
 	 * clear the stack
 	 */
 	
-	public void clear() {
+	protected void clear() {
 		stack.clear();
 		isEmpty = true;
 		stackLength = 0;
