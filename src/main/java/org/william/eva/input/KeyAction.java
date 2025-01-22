@@ -24,7 +24,7 @@ public class KeyAction {
 	private static FileManager fileManager = new FileManager();
 	private Terminal terminal = new Terminal();
 
-	private String[] extensionsList = new String[]{".java"};
+	private String[] extensionsList = new String[]{".java", ".c", ".py"};
 	
 	private FileEntity fileArchive;
 	private FileEntity fileRunnable;
