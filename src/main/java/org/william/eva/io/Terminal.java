@@ -33,7 +33,7 @@ public class Terminal {
 		
 		stringBuilder.append(customPattern + ": " + message + ": " + fileName);
 		
-		return String.valueOf(stringBuilder);
+		return stringBuilder.toString();
 	}
 	
 	/**
@@ -54,6 +54,6 @@ public class Terminal {
 		
 		stringBuilder.append(label + " " + customPattern + ": " + message);
 		
-		return String.valueOf(stringBuilder);
+		return stringBuilder.toString();
 	}
 }

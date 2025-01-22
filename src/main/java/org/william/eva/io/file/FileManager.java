@@ -126,7 +126,7 @@ public class FileManager {
 				e1.printStackTrace();
 			}
 		}
-		return String.valueOf(stringBuilder);
+		return stringBuilder.toString();
 	}
 	
 	/**
