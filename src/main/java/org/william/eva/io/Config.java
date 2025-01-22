@@ -1,6 +1,7 @@
 package org.william.eva.io;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,7 +64,10 @@ public class Config  {
 		
 		if (osName.toLowerCase().contains("windows")) {
 			String[] regedit = new String[] {"cmd.exe", "/c" , "reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v AppsUseLightTheme"};
-			Process process = Runtime.getRuntime().exec(regedit);
+			File dir = new File("C:/");
+			
+			Runtime runtime = Runtime.getRuntime();
+			Process process = runtime.exec(regedit, null, dir);
 
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream(), charset));
 			
