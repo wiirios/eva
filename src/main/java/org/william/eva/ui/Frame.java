@@ -46,6 +46,8 @@ public class Frame {
 	private FileManager fileManager;
 	private Undo undo;
 	
+	public JTextPane terminalPane;
+	
 	private Message isOpenEnum = Message.ISOPEN;
 	// private Message openFileEnum = Message.OPENFILE;
 	// private Message closeFileEnum = Message.CLOSEDFILE;
@@ -88,7 +90,7 @@ public class Frame {
 					JPanel panel = new JPanel();
 					jFrame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
-					JTextPane terminalPane = new JTextPane();
+					terminalPane = new JTextPane();
 					terminalPane.setEnabled(false);
 					terminalPane.setEditable(false);
 					terminalPane.setFont(new Font("Courier New", Font.PLAIN, 12));
@@ -118,6 +120,9 @@ public class Frame {
 					menuBar.add(fileMenu);
 					
 					JMenuItem openMenuItem = new JMenuItem("Open");
+					JMenuItem saveMenuItem = new JMenuItem("Save");
+					saveMenuItem.setEnabled(false);
+					
 					fileMenu.add(openMenuItem);
 					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 					openMenuItem.addActionListener(new ActionListener() {
@@ -125,10 +130,11 @@ public class Frame {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							btnAction.openDialog();
+							saveMenuItem.setEnabled(true);
 						}
 					});
 					
-					JMenuItem saveMenuItem = new JMenuItem("Save");
+					// save
 					fileMenu.add(saveMenuItem);
 					saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 					saveMenuItem.addActionListener(new ActionListener() {
@@ -137,7 +143,6 @@ public class Frame {
 						public void actionPerformed(ActionEvent e) {
 							btnAction.saveDialog();
 							terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
-							
 						}
 					});
 					
@@ -153,19 +158,19 @@ public class Frame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							// btnAction.runProject();
-						}
-						
+							btnAction.runProject();
+						}						
 					});
 					
-					JMenuItem buildMenuItem = new JMenuItem("Build");
-					projectMenu.add(buildMenuItem);
-					buildMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
-					buildMenuItem.addActionListener(new ActionListener() {
+					JMenuItem compileMenuItem = new JMenuItem("Compile");
+					projectMenu.add(compileMenuItem);
+					compileMenuItem.setEnabled(false);
+					compileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+					compileMenuItem.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							// btnAction.buildProject();
+							// btnAction.compileProject();
 						}
 						
 					});

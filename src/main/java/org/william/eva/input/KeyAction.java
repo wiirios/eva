@@ -1,6 +1,7 @@
 package org.william.eva.input;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,8 +23,7 @@ public class KeyAction {
 
 	private static FileManager fileManager = new FileManager();
 	private Terminal terminal = new Terminal();
-	
-	/* for now only support .java */
+
 	private String[] extensionsList = new String[]{".java"};
 	
 	private FileEntity fileArchive;
@@ -85,13 +85,29 @@ public class KeyAction {
 	 */
 	
 	public void runProject() {
+		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
+
+		Run run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
+		String fileExtension = fileRunnable.getExtension();
+		
+		for (int i = 0; i < extensionsList.length; i++) {
+			String r = extensionsList[i];
+			
+			if (fileExtension.equals(r)) {
+				try {
+					run.runnable();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}			
+		}
 	}
 	
 	/**
 	 * Working in
 	 */
 	
-	public void buildProject(JMenuItem mntmNewMenuItem) {
+	public void compileProject(JMenuItem mntmNewMenuItem) {
 		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
 	}
 }
