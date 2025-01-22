@@ -81,7 +81,13 @@ public class KeyAction {
 	}
 	
 	/**
-	 * Working in
+	 * Executes the project file if its extension matches one of the valid extensions 
+	 * in extensionsList. 
+	 * 
+	 * This method creates a FileEntity object to represent the file and 
+	 * uses a Run object to execute it. If the file extension is valid, 
+	 * the runnable() method of Run is called. Any IOException 
+	 * during execution is caught and logged.
 	 */
 	
 	public void runProject() {
