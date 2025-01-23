@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 
-import org.william.eva.ui.Frame;
-
 public class Run {
 	private static String name;
 	private static String extension;
 	private static Path path;
+	
+	private static StringBuilder stringBuilder = new StringBuilder();
+	private static String line = null;
+	private Thread thread;
 	
 	public Run(String name, String extension, Path path) {
 		this.name = name;
@@ -19,9 +21,7 @@ public class Run {
 		this.path = path;
 	}
 	
-	private static class Runner implements Runnable {	
-		StringBuilder stringBuilder = new StringBuilder();
-		String line = null;
+	private static class Runner implements Runnable {
 		String pathString = path.toString();
 		File dir = new File(pathString.substring(0, pathString.lastIndexOf("\\") + 1));
 		
@@ -46,19 +46,18 @@ public class Run {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
+				
 				stringBuilder.setLength(0);
 				line = null;
 				break;
 			default:
 				break;
 			}
-		}
-		
+		}		
 	}
 	
 	public void runnable() throws IOException {	
-		Thread thread = new Thread(new Runner());
+		thread = new Thread(new Runner());
 		thread.start();
 	}
 	
@@ -67,7 +66,8 @@ public class Run {
 		return false;
 	}
 	
-	private static void getOutput(String output) {
+	public String getOutput() {
+		return stringBuilder.toString();
 	}
 	
 	public String getErrorOutput() {
