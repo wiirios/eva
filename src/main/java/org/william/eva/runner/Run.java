@@ -63,6 +63,10 @@ public class Run {
 		return false;
 	}
 	
+	public boolean isRun() {
+		return thread.isAlive();
+	}
+	
 	public void resetOutputState() {
 		stringBuilder.setLength(0);
 		line = null;
