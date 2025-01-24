@@ -56,7 +56,7 @@ public class Config  {
 	 */
 	
 	public Integer getSystemTheme() throws IOException {
-		Charset charset = Charset.forName("ISO-8859-1");
+		Charset charset = Charset.forName(getProperties("charset"));
 		StringBuilder stringBuilder = new StringBuilder();
 		String osName = System.getProperty("os.name");
 		String line = null;
