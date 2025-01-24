@@ -22,7 +22,7 @@ public class Config  {
 	 * with the provided key. It allows for dynamic retrieval of any property 
 	 * by passing the desired key as a parameter.
 	 * 
-	 * @param value The key of the property to be retrieved from the properties file.
+	 * @param key of the property to be retrieved from the properties file.
 	 * @return A String representing the value associated with the specified key. 
 	 *         If the key does not exist, it returns null.
 	 * 
@@ -31,14 +31,12 @@ public class Config  {
 	 *                     or there is an issue during the load process.
 	 */
 	
-	public String getProperties(String value) throws IOException {
+	public String getProperties(String key) throws IOException {
 		Properties properties = new Properties();
 		FileInputStream fileInputStream = new FileInputStream(propertiesPath);
 		
 		properties.load(fileInputStream);
-		String result = properties.getProperty(value);
-		
-		return result;
+		return properties.getProperty(key);
 	}
 	
 	/**
