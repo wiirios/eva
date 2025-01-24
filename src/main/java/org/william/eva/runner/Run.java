@@ -46,9 +46,6 @@ public class Run {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
-				stringBuilder.setLength(0);
-				line = null;
 				break;
 			default:
 				break;
@@ -64,6 +61,11 @@ public class Run {
 	public boolean compile() {
 		
 		return false;
+	}
+	
+	public void resetOutputState() {
+		stringBuilder.setLength(0);
+		line = null;
 	}
 	
 	public String getOutput() {
