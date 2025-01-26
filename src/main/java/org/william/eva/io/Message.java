@@ -6,7 +6,8 @@ public enum Message {
 	ISOPEN("It is not possible to save a file without first opening one", 1, Color.RED),
 	OPENFILE("Open File", 2, Color.GREEN),
 	CLOSEDFILE("Close File", 3, Color.RED),
-	SAVEFILE("Save File", 4, Color.BLUE);
+	SAVEFILE("Save File", 4, Color.BLUE),
+	UNSUPPORTEDEX("Unsupported Extension", 5, Color.RED);
 	
 	private String message;
 	private int id;
