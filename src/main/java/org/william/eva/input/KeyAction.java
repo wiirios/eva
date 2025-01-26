@@ -31,6 +31,8 @@ public class KeyAction {
 	private FileEntity fileRunnable;
 	private Run run;
 	
+	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
+	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
 		this.frame = frame;
@@ -107,7 +109,9 @@ public class KeyAction {
 				run.resetOutputState();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}	
+			}
+		} else {
+			terminalPane.setText(terminal.logError(UnsupportedEx.getMessage()));
 		}
 	}
 	
