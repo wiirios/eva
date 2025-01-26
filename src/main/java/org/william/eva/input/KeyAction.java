@@ -2,6 +2,9 @@ package org.william.eva.input;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,13 +24,12 @@ public class KeyAction {
 	private JTextPane textPane;
 	private JTextPane terminalPane;
 
-	private static FileManager fileManager = new FileManager();
+	private FileManager fileManager = new FileManager();
 	private Terminal terminal = new Terminal();
-
-	private String[] extensionsList = new String[]{".java", ".c", ".py"};
 	
 	private FileEntity fileArchive;
 	private FileEntity fileRunnable;
+	private Run run;
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
@@ -92,20 +94,20 @@ public class KeyAction {
 	
 	public void runProject() {
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
-
-		Run run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
-		String fileExtension = fileRunnable.getExtension();
+		run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());
 		
-		for (int i = 0; i < extensionsList.length; i++) {
-			String r = extensionsList[i];
-			
-			if (fileExtension.equals(r)) {
-				try {
-					run.runnable();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}			
+		terminalPane.setText(null);
+		
+		Set<String> extensionsList = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
+		
+		if (extensionsList.contains(fileRunnable.getExtension())) {
+			try {
+				run.runnable();
+				terminalPane.setText(run.getOutput());
+				run.resetOutputState();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
 		}
 	}
 	
