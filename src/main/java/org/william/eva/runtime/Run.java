@@ -1,4 +1,4 @@
-package org.william.eva.runner;
+package org.william.eva.runtime;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,8 +19,8 @@ public class Run {
 		this.name = name;
 		this.extension = extension;
 		this.path = path;
-	}
-	
+	}		
+				
 	private static class Runner implements Runnable {
 		String pathString = path.toString();
 		File dir = new File(pathString.substring(0, pathString.lastIndexOf("\\") + 1));
@@ -29,15 +29,15 @@ public class Run {
 		public void run() {
 			switch (extension) {
 			case ".java":
-				String[] javaRegedit = new String[] {"cmd.exe", "/c", "java " + name};
+				String[] javaRunRegedit = new String[] {"cmd.exe", "/c", "java " + name};
 				
 				/* i will still create an option in the preferences to be able to customize the path to the evnp of the chosen language */
 				// String[] envy = new String[] {"JAVA_HOME", "C:\\Program Files\\Java\\"};
 				// String [] customEnvp;
-								
+									
 				try {
 					Runtime runtime = Runtime.getRuntime();
-					Process process = runtime.exec(javaRegedit, null, dir);
+					Process process = runtime.exec(javaRunRegedit, null, dir);
 					
 					BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 					while((line = bufferedReader.readLine()) != null) {
@@ -51,16 +51,11 @@ public class Run {
 				break;
 			}
 		}		
-	}
+	}	
 	
 	public void runnable() throws IOException {	
 		thread = new Thread(new Runner());
 		thread.start();
-	}
-	
-	public boolean compile() {
-		
-		return false;
 	}
 	
 	public boolean isRun() {
@@ -76,8 +71,11 @@ public class Run {
 		return stringBuilder.toString();
 	}
 	
-	public String getErrorOutput() {
-		
+	/*
+	 * Working in
+	 */
+	
+	public String getErrorOutput() {		
 		return null;
 	}
 }

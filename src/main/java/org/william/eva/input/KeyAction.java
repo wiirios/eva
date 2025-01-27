@@ -13,7 +13,7 @@ import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
-import org.william.eva.runner.Run;
+import org.william.eva.runtime.Run;
 
 public class KeyAction {
 	private JFileChooser jFile;
@@ -34,9 +34,9 @@ public class KeyAction {
 		this.jFile = jFile;
 		this.frame = frame;
 		this.textPane = textPane;
-		this.terminalPane = terminalPane;
+		this.terminalPane = terminalPane;	
 	}
-
+	
 	/**
 	 * Opens a file dialog and handles file selection.
 	 * 
@@ -91,9 +91,9 @@ public class KeyAction {
 	 * during execution is caught and logged.
 	 */
 	
-	public void runProject() {
+	public void runProject() {		
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
-		run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());
+		run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
 		
 		terminalPane.setText(null);
 		
