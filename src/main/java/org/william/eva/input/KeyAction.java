@@ -13,7 +13,7 @@ import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
-import org.william.eva.runtime.Run;
+import org.william.eva.runtime.Runner;
 
 public class KeyAction {
 	private JFileChooser jFile;
@@ -26,7 +26,7 @@ public class KeyAction {
 	
 	private FileEntity fileArchive;
 	private FileEntity fileRunnable;
-	private Run run;
+	private Runner run;
 	
 	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
 	
@@ -93,7 +93,7 @@ public class KeyAction {
 	
 	public void runProject() {		
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
-		run = new Run(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
+		run = new Runner(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
 		
 		terminalPane.setText(null);
 		
