@@ -1,6 +1,5 @@
 package org.william.eva.input;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,9 +7,7 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
 
 import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
@@ -119,7 +116,6 @@ public class KeyAction {
 	 * Working in
 	 */
 	
-	public void compileProject(JMenuItem mntmNewMenuItem) {
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+	public void compileProject() {
 	}
 }
