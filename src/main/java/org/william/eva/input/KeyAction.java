@@ -29,7 +29,7 @@ public class KeyAction {
 	
 	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
 	
-	Set<String> extensionsList = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
+	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
@@ -98,7 +98,7 @@ public class KeyAction {
 		
 		terminalPane.setText(null);
 				
-		if (extensionsList.contains(fileRunnable.getExtension())) {
+		if (supportedExtensions.contains(fileRunnable.getExtension())) {
 			runner.run();
 						
 			terminalPane.setText(runner.getOutput());
