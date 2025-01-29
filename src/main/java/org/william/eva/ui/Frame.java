@@ -121,7 +121,11 @@ public class Frame {
 					
 					JMenuItem openMenuItem = new JMenuItem("Open");
 					JMenuItem saveMenuItem = new JMenuItem("Save");
+					JMenuItem runMenuItem = new JMenuItem("Run");
+					JMenuItem compileMenuItem = new JMenuItem("Compile");
 					saveMenuItem.setEnabled(false);
+					runMenuItem.setEnabled(false);				
+					compileMenuItem.setEnabled(false);
 					
 					fileMenu.add(openMenuItem);
 					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
@@ -131,6 +135,8 @@ public class Frame {
 						public void actionPerformed(ActionEvent e) {
 							btnAction.openDialog();
 							saveMenuItem.setEnabled(true);
+							runMenuItem.setEnabled(true);
+							compileMenuItem.setEnabled(true);
 						}
 					});
 					
@@ -151,7 +157,6 @@ public class Frame {
 					JMenu projectMenu = new JMenu("Project");
 					menuBar.add(projectMenu);
 					
-					JMenuItem runMenuItem = new JMenuItem("Run");
 					projectMenu.add(runMenuItem);
 					runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
 					runMenuItem.addActionListener(new ActionListener() {
@@ -161,16 +166,14 @@ public class Frame {
 							btnAction.runProject();
 						}						
 					});
-					
-					JMenuItem compileMenuItem = new JMenuItem("Compile");
+										
 					projectMenu.add(compileMenuItem);
-					compileMenuItem.setEnabled(false);
 					compileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
 					compileMenuItem.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							// btnAction.compileProject();
+							btnAction.compileProject();
 						}
 						
 					});
