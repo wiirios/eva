@@ -1,6 +1,5 @@
 package org.william.eva.input;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,9 +25,11 @@ public class KeyAction {
 	
 	private FileEntity fileArchive;
 	private FileEntity fileRunnable;
-	private Runner run;
+	private Runner runner;
 	
 	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
+	
+	Set<String> extensionsList = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
@@ -93,28 +94,19 @@ public class KeyAction {
 	
 	public void runProject() {		
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
-		run = new Runner(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
+		runner = new Runner(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
 		
 		terminalPane.setText(null);
-		
-		Set<String> extensionsList = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
-		
+				
 		if (extensionsList.contains(fileRunnable.getExtension())) {
-			try {
-				run.runnable();
-				terminalPane.setText(run.getOutput());
-				run.resetOutputState();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			runner.run();
+						
+			terminalPane.setText(runner.getOutput());
+			runner.resetOutputState();
 		} else {
 			terminalPane.setText(terminal.logError(UnsupportedEx.getMessage()));
 		}
 	}
-	
-	/**
-	 * Working in
-	 */
 	
 	public void compileProject() {
 	}
