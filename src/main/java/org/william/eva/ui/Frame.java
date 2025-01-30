@@ -28,9 +28,6 @@ import javax.swing.GroupLayout.Alignment;
 import org.william.eva.input.KeyAction;
 import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
-import org.william.eva.io.Message;
-import org.william.eva.io.Terminal;
-import org.william.eva.io.file.FileManager;
 
 import javax.swing.JScrollPane;
 
@@ -42,16 +39,9 @@ public class Frame {
 	private JFileChooser jFile;
 	private Config config;
 	private KeyAction btnAction;
-	private Terminal terminal;
-	private FileManager fileManager;
 	private Undo undo;
 	
 	public JTextPane terminalPane;
-	
-	private Message isOpenEnum = Message.ISOPEN;
-	// private Message openFileEnum = Message.OPENFILE;
-	// private Message closeFileEnum = Message.CLOSEDFILE;
-	private Message saveFileEnum = Message.SAVEFILE;
 		
 	public Frame() {
 		initialize();
@@ -60,8 +50,6 @@ public class Frame {
 	private void initialize() {
 		jFile = new JFileChooser("c:");
 		config = new Config("./src/main/resources/config.properties");
-		terminal = new Terminal();
-		fileManager = new FileManager();
 
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
@@ -148,7 +136,6 @@ public class Frame {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							btnAction.saveDialog();
-							terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
 						}
 					});
 					
