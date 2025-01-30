@@ -29,6 +29,8 @@ public class Runner implements Runnable {
 		case ".py":
 			process("python");
 			break;
+		case ".jl":
+			process("julia");
 		default:
 			break;
 		}

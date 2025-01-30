@@ -36,7 +36,7 @@ public class KeyAction {
 	private Message CompilerUnsupportedEx = Message.NONCOMPILABLEEXT;
 	private Message saveFileEnum = Message.SAVEFILE;
 	
-	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
+	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py", ".jl"));
 	Set<String> compilableExtensions = new HashSet<>(Arrays.asList(".java", ".c"));
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
