@@ -132,6 +132,15 @@ public class KeyAction {
 		}
 	}
 	
+	/**
+	 * Compiles the project by running the appropriate compiler for the given file.
+	 * 
+	 * This method creates a FileEntity from the file details (name, extension, path, and size),
+	 * and initializes a Compiler with the file's name, extension, and path. It then checks if
+	 * the file's extension is supported and compilable. If so, the compiler is run. Otherwise, an error
+	 * message is displayed in the terminal.
+	 */
+	
 	public void compileProject() {
 		fileCompiler = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
 		compiler = new Compiler(fileCompiler.getName(), fileCompiler.getExtension(), fileCompiler.getPath());	
