@@ -15,10 +15,7 @@ import javax.swing.JTextPane;
 import org.william.eva.io.Config;
 import org.william.eva.io.Terminal;
 
-public class FileManager {
-	private static final String dot = ".";
-	private Config config;
-	
+public class FileManager {	
 	public FileManager() {}
 	
 	/**
@@ -49,7 +46,7 @@ public class FileManager {
 	
 	public String getFileExtension(JFileChooser jFile) {
 		String fileExtension = getFileName(jFile);
-		if (jFile != null) return fileExtension.substring(fileExtension.indexOf(dot));
+		if (jFile != null) return fileExtension.substring(fileExtension.indexOf("."));
 		
 		return null;
 	}
@@ -102,7 +99,9 @@ public class FileManager {
 	 */
 	
 	public String writerTextPane(JFileChooser jFile) {
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();		
+		Terminal terminal = new Terminal();
+		Config config = new Config("./src/main/resources/config.properties");
 		String line = null;
 		
 		try (BufferedReader reader = Files.newBufferedReader(getFilePath(jFile))) {	
@@ -110,17 +109,15 @@ public class FileManager {
 				stringBuilder.append(line);
 				stringBuilder.append("\r");
 			}
-		} catch (IOException e) {
-			config = new Config("./src/main/resources/config.properties");
-			
+		} catch (IOException e) {			
 			try {
 				if (config.getProperties("fullerrorlog").equals("false")) {
-					return new Terminal().logError(String.valueOf(e));
+					return terminal.logError(String.valueOf(e));
 				} else {
 					StringWriter stringWriter = new StringWriter();
 					e.printStackTrace(new PrintWriter(stringWriter));
 					
-					return new Terminal().logError(String.valueOf(stringWriter));
+					return terminal.logError(String.valueOf(stringWriter));
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
