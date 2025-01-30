@@ -12,6 +12,7 @@ import org.william.eva.io.Message;
 import org.william.eva.io.Terminal;
 import org.william.eva.io.file.FileEntity;
 import org.william.eva.io.file.FileManager;
+import org.william.eva.runtime.Compiler;
 import org.william.eva.runtime.Runner;
 
 public class KeyAction {
@@ -25,11 +26,18 @@ public class KeyAction {
 	
 	private FileEntity fileArchive;
 	private FileEntity fileRunnable;
-	private Runner runner;
+	private FileEntity fileCompiler;
 	
+	private Runner runner;
+	private Compiler compiler;
+	
+	private Message openFileEnum = Message.OPENFILE;
 	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
+	private Message CompilerUnsupportedEx = Message.NONCOMPILABLEEXT;
+	private Message saveFileEnum = Message.SAVEFILE;
 	
 	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py"));
+	Set<String> compilableExtensions = new HashSet<>(Arrays.asList(".java", ".c"));
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
@@ -55,9 +63,7 @@ public class KeyAction {
 		
 			if (fileText.substring(0, terminal.labelLength).equals(terminal.label)) {
 				terminalPane.setText(fileText);
-			} else {
-				Message openFileEnum = Message.OPENFILE;
-				
+			} else {				
 				frame.setTitle(fileArchive.getName());
 				textPane.setVisible(true);
 				textPane.setText(fileText);
@@ -79,6 +85,7 @@ public class KeyAction {
 		
 		if (dialogSave == JFileChooser.APPROVE_OPTION) {
 			fileManager.rewriteArchive(this.jFile, this.textPane);
+			terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
 		}
 	}
 	
@@ -95,12 +102,29 @@ public class KeyAction {
 	public void runProject() {		
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
 		runner = new Runner(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
+		Thread thread = new Thread(runner);
 		
 		terminalPane.setText(null);
 				
 		if (supportedExtensions.contains(fileRunnable.getExtension())) {
-			runner.run();
-						
+		
+			/*
+			 * There is an issue where the terminal output is not visible because the stringBuilder is being reset before the thread finishes executing.
+			 * This causes a NullPointerException when trying to access the stringBuilder, as it is null at the time of access.
+			 * It's unclear whether the thread is executing too quickly or if the code resetting the stringBuilder is running faster than the thread's execution, 
+			 * causing the error that the stringBuilder is null.
+			 * To mitigate this, I added a 5-second delay (Thread.sleep(5000)), which gives enough time for the thread to finish executing and the output to be processed.
+			 * However, this is not an optimal solution, as it introduces an arbitrary delay and does not account for the actual execution time of the thread.
+			 * I am currently working on a more robust solution to ensure the terminal output is updated only after the thread has finished processing.
+			 */
+
+			try {
+				thread.start();
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			terminalPane.setText(runner.getOutput());
 			runner.resetOutputState();
 		} else {
@@ -109,5 +133,15 @@ public class KeyAction {
 	}
 	
 	public void compileProject() {
+		fileCompiler = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
+		compiler = new Compiler(fileCompiler.getName(), fileCompiler.getExtension(), fileCompiler.getPath());	
+		
+		String extension = fileCompiler.getExtension();
+		
+		if (supportedExtensions.contains(extension) && compilableExtensions.contains(extension)) {
+			compiler.run();
+		} else {
+			terminalPane.setText(terminal.logError(CompilerUnsupportedEx.getMessage()));
+		}
 	}
 }
