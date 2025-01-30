@@ -99,7 +99,7 @@ public class KeyAction {
 	 * during execution is caught and logged.
 	 */
 	
-	public void runProject() {		
+	public void runProject() {
 		fileRunnable = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
 		runner = new Runner(fileRunnable.getName(), fileRunnable.getExtension(), fileRunnable.getPath());	
 		Thread thread = new Thread(runner);
@@ -137,7 +137,7 @@ public class KeyAction {
 		String extension = fileCompiler.getExtension();
 		
 		if (supportedExtensions.contains(extension) && compilableExtensions.contains(extension)) {
-			compiler.run();
+			new Thread(compiler).start();
 		} else {
 			terminalPane.setText(terminal.logError(CompilerUnsupportedEx.getMessage()));
 		}

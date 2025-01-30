@@ -17,23 +17,26 @@ public class Compiler implements Runnable {
 
 	@Override
 	public void run() {
-		String pathString = path.toString();
-		File dir = new File(pathString.substring(0, pathString.lastIndexOf("\\") + 1));
-		
-		switch(extension) {
+		switch (extension) {
 		case ".java":
-			String[] javaCompileRegedit = new String[] {"cmd.exe", "/c", "javac " + name};
-			
-			Runtime runtime = Runtime.getRuntime();
-			try {
-				runtime.exec(javaCompileRegedit, null, dir);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+			process("javac");
 			break;
 		default:
 			break;
 		}
 	}	
 
+	private void process(String file) {
+		String pathString = path.toString();
+		File dir = new File(pathString.substring(0, pathString.lastIndexOf("\\") + 1));
+		
+		String[] javaCompileRegedit = new String[] {"cmd.exe", "/c", file + " " + name};
+		
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec(javaCompileRegedit, null, dir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
 }
