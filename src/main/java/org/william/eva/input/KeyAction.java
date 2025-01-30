@@ -107,20 +107,9 @@ public class KeyAction {
 		terminalPane.setText(null);
 				
 		if (supportedExtensions.contains(fileRunnable.getExtension())) {
-		
-			/*
-			 * There is an issue where the terminal output is not visible because the stringBuilder is being reset before the thread finishes executing.
-			 * This causes a NullPointerException when trying to access the stringBuilder, as it is null at the time of access.
-			 * It's unclear whether the thread is executing too quickly or if the code resetting the stringBuilder is running faster than the thread's execution, 
-			 * causing the error that the stringBuilder is null.
-			 * To mitigate this, I added a 5-second delay (Thread.sleep(5000)), which gives enough time for the thread to finish executing and the output to be processed.
-			 * However, this is not an optimal solution, as it introduces an arbitrary delay and does not account for the actual execution time of the thread.
-			 * I am currently working on a more robust solution to ensure the terminal output is updated only after the thread has finished processing.
-			 */
-
+			thread.start();
 			try {
-				thread.start();
-				Thread.sleep(5000);
+				thread.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
