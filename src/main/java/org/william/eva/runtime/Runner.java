@@ -38,20 +38,23 @@ public class Runner implements Runnable {
 	
 	private void process(String file) {
 		stringBuilder = new StringBuilder();
-		String pathString = path.toString();
-		File dir = new File(pathString.substring(0, pathString.lastIndexOf("\\") + 1));
+		File dir = new File(path.toString().substring(0, path.toString().lastIndexOf("\\") + 1));
 		
-		String[] regedit = new String[] {"cmd.exe", "/c", file + " " + name};
+		String[] regedit = new String[] {"cmd.exe", "/c", String.join(" ", file, name)};
 		
 		try {
-			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(regedit, null, dir);
+			Process process = Runtime.getRuntime().exec(regedit, null, dir);
+			BufferedReader bufferedReader;
 			
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			process.waitFor();
+			boolean success = (process.exitValue() == 0);
+			
+			bufferedReader = success ? new BufferedReader(new InputStreamReader(process.getInputStream())) : new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
 			while((line = bufferedReader.readLine()) != null) {
 				stringBuilder.append(line);
 			}
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}		
 	}
