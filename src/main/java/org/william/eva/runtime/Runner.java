@@ -67,12 +67,4 @@ public class Runner implements Runnable {
 	public String getOutput() {
 		return stringBuilder.toString();
 	}
-	
-	/*
-	 * Working in
-	 */
-	
-	public String getErrorOutput() {		
-		return null;
-	}
 }
