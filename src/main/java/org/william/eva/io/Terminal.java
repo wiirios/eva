@@ -31,7 +31,7 @@ public class Terminal {
 		dateLocal = LocalDateTime.now(Clock.systemDefaultZone());
 		String customPattern = dateLocal.format(DateTimeFormatter.ofPattern("H:m:s"));
 		
-		stringBuilder.append(customPattern + ": " + message + ": " + fileName);
+		stringBuilder.append(String.join(": ", customPattern, message, fileName));
 		
 		return stringBuilder.toString();
 	}
@@ -52,7 +52,7 @@ public class Terminal {
 		dateLocal = LocalDateTime.now(Clock.systemDefaultZone());
 		String customPattern = dateLocal.format(DateTimeFormatter.ofPattern("H:m:s"));
 		
-		stringBuilder.append(label + " " + customPattern + ": " + message);
+		stringBuilder.append(String.join(" ", label, customPattern, message));
 		
 		return stringBuilder.toString();
 	}
