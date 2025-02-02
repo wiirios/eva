@@ -35,6 +35,7 @@ public class KeyAction {
 	private Message UnsupportedEx = Message.UNSUPPORTEDEX;
 	private Message CompilerUnsupportedEx = Message.NONCOMPILABLEEXT;
 	private Message saveFileEnum = Message.SAVEFILE;
+	private Message compilerSuccess = Message.COMPILESUCCESSFUL;
 	
 	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py", ".jl"));
 	Set<String> compilableExtensions = new HashSet<>(Arrays.asList(".java", ".c"));
@@ -133,11 +134,26 @@ public class KeyAction {
 	public void compileProject() {
 		fileCompiler = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
 		compiler = new Compiler(fileCompiler.getName(), fileCompiler.getExtension(), fileCompiler.getPath());	
+		Thread thread = new Thread(compiler);
 		
 		String extension = fileCompiler.getExtension();
 		
 		if (supportedExtensions.contains(extension) && compilableExtensions.contains(extension)) {
-			new Thread(compiler).start();
+			thread.start();
+			
+			try {
+				thread.join();				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}	
+			
+			if (compiler.compileSuccess()) {
+				terminalPane.setText(terminal.logFileAction(compilerSuccess.getMessage(), fileCompiler.getName()));
+				compiler.resetOutputState();
+			} else {
+				terminalPane.setText(compiler.getOutput());
+				compiler.resetOutputState();
+			}
 		} else {
 			terminalPane.setText(terminal.logError(CompilerUnsupportedEx.getMessage()));
 		}
