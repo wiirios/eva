@@ -7,7 +7,8 @@ public enum Message {
 	CLOSEDFILE("Close File", 3, Color.RED),
 	SAVEFILE("Save File", 4, Color.BLUE),
 	UNSUPPORTEDEX("Unsupported Extension", 5, Color.RED),
-	NONCOMPILABLEEXT("Cannot compile this extension", 6, Color.RED);
+	NONCOMPILABLEEXT("Cannot compile this extension", 6, Color.RED),
+	COMPILESUCCESSFUL("The compilation was successful", 7, Color.GREEN);
 		
 	private String message;
 	private int id;
