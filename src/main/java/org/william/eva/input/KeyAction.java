@@ -55,7 +55,7 @@ public class KeyAction {
 	 * The file chooser is configured to allow the user to browse and open files.
 	 */
 	
-	public void openDialog() {
+	public boolean openDialog() {
 		int dialogOpen = this.jFile.showOpenDialog(null);
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
@@ -69,8 +69,11 @@ public class KeyAction {
 				textPane.setVisible(true);
 				textPane.setText(fileText);
 				terminalPane.setText(terminal.logFileAction(openFileEnum.getMessage(), fileManager.getFileName(this.jFile)));
-			}			
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
 	/**

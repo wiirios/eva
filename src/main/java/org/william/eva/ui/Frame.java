@@ -55,8 +55,9 @@ public class Frame {
 		FlatLightLaf.setup();
 		
 		try {
+			
 			if (config.getSystemTheme() == 0) {
-				UIManager.setLookAndFeel(new FlatDarkLaf());
+				UIManager.setLookAndFeel(new FlatDarkLaf());				
 			} else {
 				UIManager.setLookAndFeel(new FlatLightLaf());
 			}
@@ -79,10 +80,11 @@ public class Frame {
 					jFrame.getContentPane().add(panel, BorderLayout.SOUTH);
 					
 					terminalPane = new JTextPane();
-					terminalPane.setEnabled(false);
-					terminalPane.setEditable(false);
 					terminalPane.setFont(new Font("Courier New", Font.PLAIN, 12));
-					terminalPane.setBackground(new Color(36, 37, 43));
+					boolean isDarkMode = UIManager.getLookAndFeel().getName().equals(FlatDarkLaf.NAME);
+
+					terminalPane.setBackground(isDarkMode ? new Color(36, 37, 43) : new Color(249, 249, 249));
+					terminalPane.setForeground(isDarkMode ? new Color(255, 255, 255) : new Color(36, 37, 43));
 					
 					JTextPane textPane = new JTextPane();
 					textPane.setVisible(false);
@@ -121,10 +123,11 @@ public class Frame {
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							btnAction.openDialog();
-							saveMenuItem.setEnabled(true);
-							runMenuItem.setEnabled(true);
-							compileMenuItem.setEnabled(true);
+							if (btnAction.openDialog()) {
+								saveMenuItem.setEnabled(true);
+								runMenuItem.setEnabled(true);
+								compileMenuItem.setEnabled(true);	
+							}
 						}
 					});
 					
@@ -179,6 +182,8 @@ public class Frame {
 						
 					});
 					windowMenu.add(preferencesMenuItem);
+					
+					
 										
 					JPanel panel_1 = new JPanel();
 					jFrame.getContentPane().add(panel_1, BorderLayout.WEST);
