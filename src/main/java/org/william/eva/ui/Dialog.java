@@ -14,7 +14,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BoxLayout;
-
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -79,6 +79,16 @@ public class Dialog extends JDialog {
         charsetPanel.add(new JComboBox<>(charset));
         
         panelGeneral.add(charsetPanel);
+        
+        JCheckBox jCheckBox = new JCheckBox();
+        JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        savePanel.add(new JLabel("Auto save (default: on)"));
+        savePanel.setPreferredSize(size);
+        savePanel.setMaximumSize(savePanel.getPreferredSize());
+        savePanel.setMinimumSize(savePanel.getPreferredSize());
+        savePanel.add(jCheckBox);
+        
+        panelGeneral.add(savePanel);
 
         JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         intervalPanel.add(new JLabel("Editor save interval (in minutes)"));
@@ -93,7 +103,7 @@ public class Dialog extends JDialog {
         panelLanguage.add(new JLabel("Language"));
         panelLanguage.add(new JComboBox<>(languages));
 
-        container.add(panelGeneral, "General");
+        container.add(panelGeneral, "General");        
         container.add(panelLanguage, "Language");
 
         list.addListSelectionListener(new ListSelectionListener() {
