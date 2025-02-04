@@ -32,6 +32,12 @@ public class Compiler implements Runnable {
 		}
 	}	
 
+	 /**
+     * Executes the command to compile the source file and captures any errors.
+     * 
+     * @param file the compiler command (e.g., "javac").
+     */
+	
 	private void process(String file) {
 		stringBuilder = new StringBuilder();
 		File dir = new File(path.toString().substring(0, path.toString().lastIndexOf("\\") + 1));
@@ -54,14 +60,30 @@ public class Compiler implements Runnable {
 		}
 	}
 	
+	 /**
+     * Returns whether the compilation was successful.
+     * 
+     * @return true if the compilation was successful, false otherwise.
+     */
+	
 	public boolean compileSuccess() {		
 		return success;
 	}
+	
+	/**
+     * Resets the output state by clearing the captured error output.
+     */
 	
 	public void resetOutputState() {
 		stringBuilder.setLength(0);
 		line = null;
 	}
+	
+	/**
+     * Returns the captured output from the compilation process.
+     * 
+     * @return the output as a string.
+     */
 	
 	public String getOutput() {
 		return stringBuilder.toString();
