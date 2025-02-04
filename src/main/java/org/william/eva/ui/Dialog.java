@@ -14,6 +14,8 @@ import javax.swing.BoxLayout;
 
 import javax.swing.JTextField;
 
+import org.william.eva.annotation.Incomplete;
+
 public class Dialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static final int HEIGHT = 300;
@@ -28,6 +30,7 @@ public class Dialog extends JDialog {
 		initialize();
 	}		
 	
+	@Incomplete()
 	private void initialize() {
 		this.setSize(WIDTH, HEIGHT);
 		this.setModalityType(DEFAULT_MODALITY_TYPE);

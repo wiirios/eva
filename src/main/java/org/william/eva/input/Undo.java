@@ -7,6 +7,8 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import org.william.eva.annotation.Incomplete;
+
 public class Undo {	
 	private JTextPane textPane;
     private Stack stack;
@@ -60,7 +62,8 @@ public class Undo {
 	 * Performs an undo operation by removing the last character from the stack 
 	 * and the document if they are not empty.
 	 */
-
+	
+	@Incomplete()
 	protected void undo() {
 		if (!stack.empty()) {
 			try {

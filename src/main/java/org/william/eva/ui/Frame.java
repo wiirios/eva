@@ -25,6 +25,7 @@ import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+import org.william.eva.annotation.Incomplete;
 import org.william.eva.input.KeyAction;
 import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
@@ -47,6 +48,7 @@ public class Frame {
 		initialize();
 	}
 
+	@Incomplete
 	private void initialize() {
 		jFile = new JFileChooser("c:");
 		config = new Config("./src/main/resources/config.properties");
