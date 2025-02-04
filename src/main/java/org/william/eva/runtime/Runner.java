@@ -36,6 +36,14 @@ public class Runner implements Runnable {
 		}
 	}
 	
+	/**
+     * Executes the specified file on the operating system.
+     * 
+     * @param file the runner command (e.g., "java").
+     * @throws IOException If an input/output error occurs during process execution.
+     * @throws InterruptedException If the process is interrupted while waiting for its execution.
+     */
+	
 	private void process(String file) {
 		stringBuilder = new StringBuilder();
 		File dir = new File(path.toString().substring(0, path.toString().lastIndexOf("\\") + 1));
@@ -58,11 +66,21 @@ public class Runner implements Runnable {
 			e.printStackTrace();
 		}		
 	}
+	
+	/**
+     * Resets the output state by clearing the captured error output.
+     */
 
 	public void resetOutputState() {
 		stringBuilder.setLength(0);
 		line = null;
 	}
+	
+	/**
+     * Returns the captured output from the run process.
+     * 
+     * @return the output as a string.
+     */
 	
 	public String getOutput() {
 		return stringBuilder.toString();
