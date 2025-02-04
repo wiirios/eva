@@ -5,141 +5,104 @@ import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import java.awt.Component;
-import javax.swing.Box;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
 import javax.swing.BoxLayout;
 
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.william.eva.annotation.Incomplete;
 
 public class Dialog extends JDialog {
-	private static final long serialVersionUID = 1L;
-	private static final int HEIGHT = 300;
-	private static final int WIDTH = HEIGHT * 16 / 9;
-	
-	private String[] languages = new String[] {"EN", "PT"};
-	private String[] themes = new String[] {"Dark", "Light"};
-	private String[] charset = new String[] {"ISO-8859-1", "US-ASCII", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "UTF-32BE", "UTF-32LE", "UTF-32"};
-	
-	public Dialog(JFrame parent) {
-		super(parent, true);
-		initialize();
-	}		
-	
-	@Incomplete()
-	private void initialize() {
-		this.setSize(WIDTH, HEIGHT);
-		this.setModalityType(DEFAULT_MODALITY_TYPE);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-		this.setTitle("Preferences");
-		getContentPane().setLayout(new BorderLayout(0, 0));
+    private static final long serialVersionUID = 1L;
+    private static final int HEIGHT = 300;
+    private static final int WIDTH = HEIGHT * 16 / 9;
 
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"General", "Language"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		getContentPane().add(list, BorderLayout.WEST);
-		
-		/** general panel */
-		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
-		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
-		
-		/* theme opt */
-		
-		Component horizontalStrut_2 = Box.createHorizontalStrut(5);
-		panel_1.add(horizontalStrut_2);
-		
-		JLabel lblNewLabel = new JLabel("Theme");
-		panel_1.add(lblNewLabel);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		panel_1.add(horizontalStrut);
-		
-		JComboBox comboBox = new JComboBox(themes);
-		panel_1.add(comboBox);
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		panel_1.add(horizontalStrut_1);
-		
-		/* -- */
-		
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_3 = new JPanel();
-		panel_2.add(panel_3, BorderLayout.CENTER);
-		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
-		
-		/* charset opt */
-		
-		Component horizontalStrut_3 = Box.createHorizontalStrut(5);
-		panel_3.add(horizontalStrut_3);
-		
-		JLabel lblNewLabel_1 = new JLabel("Charset");
-		panel_3.add(lblNewLabel_1);
-		
-		Component horizontalStrut_4 = Box.createHorizontalStrut(16);
-		panel_3.add(horizontalStrut_4);
-		
-		JComboBox comboBox_1 = new JComboBox(charset);
-		panel_3.add(comboBox_1);
-		
-		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
-		panel_3.add(horizontalStrut_5);
-		
-		Component verticalStrut_1 = Box.createVerticalStrut(10);
-		panel_2.add(verticalStrut_1, BorderLayout.NORTH);
-		
-		JPanel panel_4 = new JPanel();
-		panel_2.add(panel_4, BorderLayout.SOUTH);
-		panel_4.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_5 = new JPanel();
-		panel_4.add(panel_5, BorderLayout.CENTER);
-		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.X_AXIS));
-		
-		Component horizontalStrut_8 = Box.createHorizontalStrut(5);
-		panel_5.add(horizontalStrut_8);
-		
-		JLabel lblNewLabel_2 = new JLabel("Editor save interval (in minutes)");
-		panel_5.add(lblNewLabel_2);
-		
-		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
-		panel_5.add(horizontalStrut_6);
-		
-		JTextField textField = new JTextField("10");
-		panel_5.add(textField);
-		textField.setColumns(10);
-		
-		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
-		panel_5.add(horizontalStrut_7);
-		
-		Component verticalStrut_2 = Box.createVerticalStrut(10);
-		panel_4.add(verticalStrut_2, BorderLayout.NORTH);
-		
-		Component verticalStrut = Box.createVerticalStrut(160);
-		panel_4.add(verticalStrut, BorderLayout.SOUTH);
-		
-		/* -- */
-		
-		this.setVisible(true);
-	}
+    private String[] languages = new String[]{"EN", "PT"};
+    private String[] themes = new String[]{"Dark", "Light"};
+    private String[] charset = new String[]{"ISO-8859-1", "US-ASCII", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "UTF-32BE", "UTF-32LE", "UTF-32"};
+
+    private CardLayout cardLayout;
+    private JPanel container;
+
+    public Dialog(JFrame parent) {
+        super(parent, true);
+        initialize();
+    }
+
+    @Incomplete
+    private void initialize() {
+        this.setSize(WIDTH, HEIGHT);
+        this.setModalityType(DEFAULT_MODALITY_TYPE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Preferences");
+        getContentPane().setLayout(new BorderLayout(0, 0));
+        
+        JList<String> list = new JList<>(new String[]{"General", "Language"});
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setSelectedIndex(0);
+        getContentPane().add(new JScrollPane(list), BorderLayout.WEST);
+
+        cardLayout = new CardLayout();
+        container = new JPanel(cardLayout);
+        getContentPane().add(container, BorderLayout.CENTER);
+
+        JPanel panelGeneral = new JPanel();
+        panelGeneral.setLayout(new BoxLayout(panelGeneral, BoxLayout.Y_AXIS));
+
+        JPanel themePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        themePanel.add(new JLabel("Theme"));
+        
+        Dimension size = new Dimension(WIDTH, 30);
+        
+        themePanel.add(new JComboBox<>(themes));
+        themePanel.setPreferredSize(size);
+        themePanel.setMaximumSize(themePanel.getPreferredSize()); 
+        themePanel.setMinimumSize(themePanel.getPreferredSize());
+        panelGeneral.add(themePanel);
+        
+        JPanel charsetPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        charsetPanel.add(new JLabel("Charset"));
+        charsetPanel.setPreferredSize(size);
+        charsetPanel.setMaximumSize(charsetPanel.getPreferredSize()); 
+        charsetPanel.setMinimumSize(charsetPanel.getPreferredSize());
+        charsetPanel.add(new JComboBox<>(charset));
+        
+        panelGeneral.add(charsetPanel);
+
+        JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        intervalPanel.add(new JLabel("Editor save interval (in minutes)"));
+        intervalPanel.setPreferredSize(size);
+        intervalPanel.setMaximumSize(intervalPanel.getPreferredSize()); 
+        intervalPanel.setMinimumSize(intervalPanel.getPreferredSize());
+        intervalPanel.add(new JTextField("10", 10));
+        
+        panelGeneral.add(intervalPanel);
+
+        JPanel panelLanguage = new JPanel();
+        panelLanguage.add(new JLabel("Language"));
+        panelLanguage.add(new JComboBox<>(languages));
+
+        container.add(panelGeneral, "General");
+        container.add(panelLanguage, "Language");
+
+        list.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                String selected = list.getSelectedValue();
+                cardLayout.show(container, selected);
+            }
+        });
+
+        this.setVisible(true);
+    }
 }
