@@ -45,6 +45,8 @@ public class KeyAction {
 		this.frame = frame;
 		this.textPane = textPane;
 		this.terminalPane = terminalPane;	
+		
+		jFile.updateUI();
 	}
 	
 	/**

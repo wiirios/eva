@@ -119,6 +119,8 @@ public class Frame {
 					runMenuItem.setEnabled(false);				
 					compileMenuItem.setEnabled(false);
 					
+					btnAction = new KeyAction(jFile, jFrame, textPane, terminalPane);
+					
 					fileMenu.add(openMenuItem);
 					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 					openMenuItem.addActionListener(new ActionListener() {
@@ -143,8 +145,6 @@ public class Frame {
 							btnAction.saveDialog();
 						}
 					});
-					
-					btnAction = new KeyAction(jFile, jFrame, textPane, terminalPane);
 					
 					JMenu projectMenu = new JMenu("Project");
 					menuBar.add(projectMenu);
@@ -184,9 +184,7 @@ public class Frame {
 						
 					});
 					windowMenu.add(preferencesMenuItem);
-					
-					
-										
+															
 					JPanel panel_1 = new JPanel();
 					jFrame.getContentPane().add(panel_1, BorderLayout.WEST);
 					panel_1.setLayout(new BorderLayout(0, 0));
