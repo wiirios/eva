@@ -21,6 +21,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.william.eva.annotation.Incomplete;
+import javax.swing.JButton;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class Dialog extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -81,14 +84,14 @@ public class Dialog extends JDialog {
         panelGeneral.add(charsetPanel);
         
         JCheckBox jCheckBox = new JCheckBox();
-        JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        savePanel.add(new JLabel("Auto save (default: on)"));
-        savePanel.setPreferredSize(size);
-        savePanel.setMaximumSize(savePanel.getPreferredSize());
-        savePanel.setMinimumSize(savePanel.getPreferredSize());
-        savePanel.add(jCheckBox);
+        JPanel saveIntervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        saveIntervalPanel.add(new JLabel("Auto save (default: on)"));
+        saveIntervalPanel.setPreferredSize(size);
+        saveIntervalPanel.setMaximumSize(saveIntervalPanel.getPreferredSize());
+        saveIntervalPanel.setMinimumSize(saveIntervalPanel.getPreferredSize());
+        saveIntervalPanel.add(jCheckBox);
         
-        panelGeneral.add(savePanel);
+        panelGeneral.add(saveIntervalPanel);
 
         JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         intervalPanel.add(new JLabel("Editor save interval (in minutes)"));
@@ -98,12 +101,23 @@ public class Dialog extends JDialog {
         intervalPanel.add(new JTextField("10", 10));
         
         panelGeneral.add(intervalPanel);
+        
+        Component verticalStrut = Box.createVerticalStrut((int) (themePanel.getPreferredSize().height * 3.5));
+        panelGeneral.add(verticalStrut);
+        
+        JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        savePanel.add(new JButton("Save"));
+        savePanel.setPreferredSize(size);
+        savePanel.setMaximumSize(savePanel.getPreferredSize()); 
+        savePanel.setMinimumSize(savePanel.getPreferredSize());            
+        
+        panelGeneral.add(savePanel);
 
         JPanel panelLanguage = new JPanel();
         panelLanguage.add(new JLabel("Language"));
         panelLanguage.add(new JComboBox<>(languages));
 
-        container.add(panelGeneral, "General");        
+        container.add(panelGeneral, "General");
         container.add(panelLanguage, "Language");
 
         list.addListSelectionListener(new ListSelectionListener() {
