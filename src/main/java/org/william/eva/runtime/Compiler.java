@@ -27,10 +27,13 @@ public class Compiler implements Runnable {
 		case ".java":
 			process("javac");
 			break;
+		case ".c":
+			process("gcc");
+			break;
 		default:
 			break;
 		}
-	}	
+	}
 
 	 /**
      * Executes the command to compile the source file and captures any errors.
