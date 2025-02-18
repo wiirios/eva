@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import org.william.eva.annotation.Incomplete;
 import org.william.eva.input.KeyAction;
 import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
+import org.william.eva.io.file.FileManager;
 
 import javax.swing.JScrollPane;
 
@@ -41,6 +43,7 @@ public class Frame {
 	private Config config;
 	private KeyAction btnAction;
 	private Undo undo;
+	private FileManager fileManager;
 	
 	public JTextPane terminalPane;
 		
@@ -152,9 +155,15 @@ public class Frame {
 					projectMenu.add(runMenuItem);
 					runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
 					runMenuItem.addActionListener(new ActionListener() {
-
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							fileManager = new FileManager();
+							try {
+								if (config.getProperties("autosave").equals("on")) fileManager.rewriteArchive(jFile, textPane);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
 							btnAction.runProject();
 						}						
 					});
