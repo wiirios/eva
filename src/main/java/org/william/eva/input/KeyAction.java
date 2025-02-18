@@ -58,7 +58,7 @@ public class KeyAction {
 	 */
 	
 	public boolean openDialog() {
-		int dialogOpen = this.jFile.showOpenDialog(null);
+		int dialogOpen = this.jFile.showOpenDialog(frame.getParent());
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
 			fileArchive = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
