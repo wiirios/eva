@@ -30,6 +30,9 @@ public class Compiler implements Runnable {
 		case ".c":
 			process("gcc");
 			break;
+		case ".cpp":
+			process("g++");
+			break;
 		default:
 			break;
 		}

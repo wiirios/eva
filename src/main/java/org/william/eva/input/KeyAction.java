@@ -37,8 +37,8 @@ public class KeyAction {
 	private Message saveFileEnum = Message.SAVEFILE;
 	private Message compilerSuccess = Message.COMPILESUCCESSFUL;
 	
-	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py", ".jl"));
-	Set<String> compilableExtensions = new HashSet<>(Arrays.asList(".java", ".c"));
+	Set<String> supportedExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".py", ".jl", ".cpp"));
+	Set<String> compilableExtensions = new HashSet<>(Arrays.asList(".java", ".c", ".cpp"));
 	
 	public KeyAction(JFileChooser jFile, JFrame frame, JTextPane textPane, JTextPane terminalPane) {
 		this.jFile = jFile;
