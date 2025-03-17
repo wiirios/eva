@@ -4,11 +4,14 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -21,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+
 import javax.swing.JPanel;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
@@ -77,7 +81,7 @@ public class Frame {
 					jFrame.setSize(WIDTH, HEIGHT);
 					jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					jFrame.setLocationRelativeTo(null);
-					
+										
 					JMenuBar menuBar = new JMenuBar();
 					jFrame.setJMenuBar(menuBar);
 					
@@ -193,7 +197,46 @@ public class Frame {
 						
 					});
 					windowMenu.add(preferencesMenuItem);
-															
+					
+					textPane.addKeyListener(new KeyListener() {
+						char lastChar;		
+						Document doc = textPane.getDocument();
+						
+						@Override
+						public void keyTyped(KeyEvent e) {
+							lastChar = e.getKeyChar();			
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							if (lastChar == '{' && e.getKeyCode() == 10) {
+								if (doc.getLength() == textPane.getCaretPosition()) {
+									try {
+										doc.insertString(textPane.getCaretPosition(), " \n", null);										
+									} catch (BadLocationException e1) {
+										e1.printStackTrace();
+									}
+								}
+								try {
+									doc.insertString(textPane.getCaretPosition(), "}", null);									
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+							}
+							
+							if (lastChar == '(') {
+								try {
+									doc.insertString(textPane.getCaretPosition(), ")", null);
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+							}
+ 						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {}
+					});
+																				
 					JPanel panel_1 = new JPanel();
 					jFrame.getContentPane().add(panel_1, BorderLayout.WEST);
 					panel_1.setLayout(new BorderLayout(0, 0));
