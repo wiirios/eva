@@ -33,7 +33,6 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
 ## Roadmap
 
 ### To Do
-- [ ] Syntax highlighting.
 - [ ] Code autocompletion with suggestions.
 - [ ] File explorer panel for opening and managing files.
 - [ ] Code formatting (auto-indent and style enforcement).
