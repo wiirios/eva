@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,14 +57,10 @@ public class Frame {
 	
 	public JTextPane terminalPane;
 	
-	/* more langs here */
+	private static String typeFile;
+	private boolean canSyntax;
 	
-	/*
-	 * c
-	 * cpp
-	 * julia
-	 * 
-	 */
+	/* more langs here */
 	
 	private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Set.of(
             "abstract", "continue", "for", "new", "switch",
@@ -172,9 +169,18 @@ public class Frame {
 							if (btnAction.openDialog()) {
 								saveMenuItem.setEnabled(true);
 								runMenuItem.setEnabled(true);
-								compileMenuItem.setEnabled(true);	
+								compileMenuItem.setEnabled(true);		
+								
+								/* file extension */
+								typeFile = btnAction.jFileExtension();
+								
+								for (String i: btnAction.getExtensions()) {
+									if (i.equals(typeFile)) {
+										canSyntax = true;
+									}
+								}
 							}
-						}
+						}						
 					});
 					
 					// save
@@ -232,7 +238,7 @@ public class Frame {
 						
 					});
 					windowMenu.add(preferencesMenuItem);					
-				
+									
 					textPane.addKeyListener(new KeyListener() {
 						char lastChar;
 										
@@ -247,46 +253,47 @@ public class Frame {
 					        Document doc = textPane.getDocument();
 					        int docLength = doc.getLength();
 					        
-					        try {
-					            String text = doc.getText(0, docLength);
-					            int caretPosition = textPane.getCaretPosition();
+					        if (canSyntax) {
+					        	try {
+						            String text = doc.getText(0, docLength);
+						            int caretPosition = textPane.getCaretPosition();
 
-					            if (lastChar == '{' && e.getKeyCode() == KeyEvent.VK_ENTER) {
-					                doc.insertString(caretPosition, " \n}", null);
-					            } 
-					            else if (lastChar == '(') {
-					                doc.insertString(caretPosition, ")", null);
-					            }
-					            
-					        	/* yeh yeh i know this code is a bullshit */
-								/* but works */
-								/* i'll make it better later */
-					            
-					            for (String keyword : JAVA_KEYWORDS) {
-					                int index = 0;
-					                boolean start = false;
-					                boolean end = false;
-					                					                		
-					                while ((index = text.indexOf(keyword, index)) >= 0) {
-					                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
-					                    if (index + keyword.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + keyword.length()))) end = true;
-					                    
-					                    if (start && end) {              
-					                        Style style = docStyled.addStyle("keywordStyle", null);  
-					                        StyleConstants.setForeground(style, Color.BLUE);
-					                        StyleConstants.setBold(style, true);
+						            if (lastChar == '{' && e.getKeyCode() == KeyEvent.VK_ENTER) {
+						                doc.insertString(caretPosition, " \n}", null);
+						            } 
+						            else if (lastChar == '(') {
+						                doc.insertString(caretPosition, ")", null);
+						            }
+						            
+						        	/* yeh yeh i know this code is a bullshit */
+									/* but works */
+									/* i'll make it better later */
+						            
+						            for (String i : JAVA_KEYWORDS) {
+						                int index = 0;
+						                boolean start = false;
+						                boolean end = false;
+						                					                		
+						                while ((index = text.indexOf(i, index)) >= 0) {
+						                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
+						                    if (index + i.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + i.length()))) end = true;
+						                    
+						                    if (start && end) {              
+						                        Style style = docStyled.addStyle("keywordStyle", null);  
+						                        StyleConstants.setForeground(style, Color.BLUE);
+						                        StyleConstants.setBold(style, true);
 
-					                        docStyled.setCharacterAttributes(index, keyword.length(), style, false);
-					                    }
+						                        docStyled.setCharacterAttributes(index, i.length(), style, false);
+						                    }
 
-					                    index += keyword.length();
-					                }
-					            }
+						                    index += i.length();
+						                }
+						            }
 
-					        } catch (BadLocationException e1) {
-					            e1.printStackTrace();
-					        }
-
+						        } catch (BadLocationException e1) {
+						            e1.printStackTrace();
+						        }
+					        }					        
 
 							/* ignore */
 							// System.out.println(doc.getDefaultRootElement().getElementCount());

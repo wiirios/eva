@@ -163,4 +163,12 @@ public class KeyAction {
 			terminalPane.setText(terminal.logError(CompilerUnsupportedEx.getMessage()));
 		}
 	}
+	
+	public Set<String> getExtensions() {
+		return supportedExtensions;
+	}
+	
+	public String jFileExtension() {
+		return fileManager.getFileExtension(this.jFile);
+	}
 }
