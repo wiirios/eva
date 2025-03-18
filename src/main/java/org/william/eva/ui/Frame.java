@@ -6,12 +6,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.Utilities;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -50,11 +59,40 @@ public class Frame {
 	private FileManager fileManager;
 	
 	public JTextPane terminalPane;
-		
+	
+	/* more langs here */
+	
+	/*
+	 * c
+	 * cpp
+	 * julia
+	 * 
+	 */
+	
+	private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Set.of(
+            "abstract", "continue", "for", "new", "switch",
+            "assert", "default", "goto", "package", "synchronized",
+            "boolean", "do", "if", "private", "this",
+            "break", "double", "implements", "protected", "throw",
+            "byte", "else", "import", "public", "throws",
+            "case", "enum", "instanceof", "return", "transient",
+            "catch", "extends", "int", "short", "try",
+            "char", "final", "interface", "static", "void",
+            "class", "finally", "long", "strictfp", "volatile",
+            "const", "float", "native", "super", "while"
+    ));
+	
+	/* later I make the variables have syntax highlight too */
+	
+	private static final Set<String> JAVA_PRIMITIVE_DATA_TYPES = new HashSet<>(Set.of(
+			"byte", "short", "int", "long", "float",
+			"double", "char", "String", "boolean"		
+	));
+	
 	public Frame() {
 		initialize();
 	}
-
+	
 	@Incomplete
 	private void initialize() {
 		jFile = new JFileChooser("c:");
@@ -90,6 +128,7 @@ public class Frame {
 					
 					terminalPane = new JTextPane();
 					terminalPane.setFont(new Font("Courier New", Font.PLAIN, 12));
+					terminalPane.setEditable(false);
 					boolean isDarkMode = UIManager.getLookAndFeel().getName().equals(FlatDarkLaf.NAME);
 
 					terminalPane.setBackground(isDarkMode ? new Color(36, 37, 43) : new Color(249, 249, 249));
@@ -196,42 +235,67 @@ public class Frame {
 						}
 						
 					});
-					windowMenu.add(preferencesMenuItem);
-					
+					windowMenu.add(preferencesMenuItem);					
+				
 					textPane.addKeyListener(new KeyListener() {
-						char lastChar;		
-						Document doc = textPane.getDocument();
-						
+						char lastChar;
+										
 						@Override
 						public void keyTyped(KeyEvent e) {
-							lastChar = e.getKeyChar();			
+							lastChar = e.getKeyChar();							
 						}
 
 						@Override
 						public void keyPressed(KeyEvent e) {
-							if (lastChar == '{' && e.getKeyCode() == 10) {
-								if (doc.getLength() == textPane.getCaretPosition()) {
-									try {
-										doc.insertString(textPane.getCaretPosition(), " \n", null);										
-									} catch (BadLocationException e1) {
-										e1.printStackTrace();
-									}
-								}
-								try {
-									doc.insertString(textPane.getCaretPosition(), "}", null);									
-								} catch (BadLocationException e1) {
-									e1.printStackTrace();
-								}
-							}
-							
-							if (lastChar == '(') {
-								try {
-									doc.insertString(textPane.getCaretPosition(), ")", null);
-								} catch (BadLocationException e1) {
-									e1.printStackTrace();
-								}
-							}
- 						}
+							StyledDocument docStyled = textPane.getStyledDocument();
+					        Document doc = textPane.getDocument();
+					        int docLength = doc.getLength();
+					        
+					        try {
+					            String text = doc.getText(0, docLength);
+					            int caretPosition = textPane.getCaretPosition();
+
+					            if (lastChar == '{' && e.getKeyCode() == KeyEvent.VK_ENTER) {
+					                doc.insertString(caretPosition, " \n}", null);
+					            } 
+					            else if (lastChar == '(') {
+					                doc.insertString(caretPosition, ")", null);
+					            }
+					            
+					        	/* yeh yeh i know this code is a bullshit */
+								/* but works */
+								/* i'll make it better later */
+					            
+					            for (String keyword : JAVA_KEYWORDS) {
+					                int index = 0;
+					                boolean start = false;
+					                boolean end = false;
+					                					                		
+					                while ((index = text.indexOf(keyword, index)) >= 0) {
+					                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
+					                    if (index + keyword.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + keyword.length()))) end = true;
+					                    
+					                    if (start && end) {              
+					                        Style style = docStyled.addStyle("keywordStyle", null);  
+					                        StyleConstants.setForeground(style, Color.BLUE);
+					                        StyleConstants.setBold(style, true);
+
+					                        docStyled.setCharacterAttributes(index, keyword.length(), style, false);
+					                    }
+
+					                    index += keyword.length();
+					                }
+					            }
+
+					        } catch (BadLocationException e1) {
+					            e1.printStackTrace();
+					        }
+
+
+							/* ignore */
+							// System.out.println(doc.getDefaultRootElement().getElementCount());
+							// System.out.println(doc.getDefaultRootElement().getElementIndex(textPane.getCaretPosition()));
+						}
 
 						@Override
 						public void keyReleased(KeyEvent e) {}
