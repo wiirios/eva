@@ -39,9 +39,10 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
 ## Roadmap
 
 ### To Do
-- [ ] Create a GitBook
-- [ ] Code autocompletion with suggestions.
-- [ ] File explorer panel for opening and managing files.
+- [ ] Create a GitBook  
+- [ ] Create a workflow guide
+- [ ] Add a file explorer panel for opening and managing files  
+- [ ] Add an option to save custom settings  
 
 ## MIT License
 This project is licensed under MIT license, read more at <span><a href="https://docs.github.com/pt/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">docs.github</span>
