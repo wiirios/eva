@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -41,6 +41,7 @@ import org.william.eva.input.KeyAction;
 import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
 import org.william.eva.io.file.FileManager;
+import org.william.eva.util.Resources;
 
 import javax.swing.JScrollPane;
 
@@ -54,6 +55,7 @@ public class Frame {
 	private KeyAction btnAction;
 	private Undo undo;
 	private FileManager fileManager;
+	private Resources resources;
 	
 	public JTextPane terminalPane;
 	
@@ -108,6 +110,8 @@ public class Frame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					resources = new Resources(Locale.getDefault().getLanguage(), Locale.getDefault().getCountry());
+					
 					jFrame = new JFrame();
 					jFrame.setSize(WIDTH, HEIGHT);
 					jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,13 +151,13 @@ public class Frame {
 
 					jFrame.getContentPane().add(textPane, BorderLayout.CENTER);
 					
-					JMenu fileMenu = new JMenu("File");
+					JMenu fileMenu = new JMenu(resources.getText("file"));
 					menuBar.add(fileMenu);
 					
-					JMenuItem openMenuItem = new JMenuItem("Open");
-					JMenuItem saveMenuItem = new JMenuItem("Save");
-					JMenuItem runMenuItem = new JMenuItem("Run");
-					JMenuItem compileMenuItem = new JMenuItem("Compile");
+					JMenuItem openMenuItem = new JMenuItem(resources.getText("open"));
+					JMenuItem saveMenuItem = new JMenuItem(resources.getText("save"));
+					JMenuItem runMenuItem = new JMenuItem(resources.getText("run"));
+					JMenuItem compileMenuItem = new JMenuItem(resources.getText("compile"));
 					saveMenuItem.setEnabled(false);
 					runMenuItem.setEnabled(false);				
 					compileMenuItem.setEnabled(false);
@@ -194,7 +198,7 @@ public class Frame {
 						}
 					});
 					
-					JMenu projectMenu = new JMenu("Project");
+					JMenu projectMenu = new JMenu(resources.getText("project"));
 					menuBar.add(projectMenu);
 					
 					projectMenu.add(runMenuItem);
@@ -224,10 +228,10 @@ public class Frame {
 						
 					});
 					
-					JMenu windowMenu = new JMenu("Window");
+					JMenu windowMenu = new JMenu(resources.getText("window"));
 					menuBar.add(windowMenu);
 					
-					JMenuItem preferencesMenuItem = new JMenuItem("Preferences");
+					JMenuItem preferencesMenuItem = new JMenuItem(resources.getText("preferences"));
 					preferencesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK | KeyEvent.ALT_DOWN_MASK));
 					preferencesMenuItem.addActionListener(new ActionListener() {
 
@@ -250,8 +254,8 @@ public class Frame {
 						@Override
 						public void keyPressed(KeyEvent e) {
 							StyledDocument docStyled = textPane.getStyledDocument();
-					        Document doc = textPane.getDocument();
-					        int docLength = doc.getLength();
+							Document doc = textPane.getDocument();
+							int docLength = doc.getLength();
 					        
 					        if (canSyntax) {
 					        	try {
@@ -283,7 +287,7 @@ public class Frame {
 						                        StyleConstants.setForeground(style, Color.BLUE);
 						                        StyleConstants.setBold(style, true);
 
-						                        docStyled.setCharacterAttributes(index, i.length(), style, false);
+						                        docStyled.setCharacterAttributes(index, i.length(), style, false);						                
 						                    }
 
 						                    index += i.length();
