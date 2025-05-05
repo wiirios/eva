@@ -1,5 +1,11 @@
 # eva
 
+<p>
+  <img src="https://img.shields.io/github/license/wiirios/eva.svg" alt="License Badge">
+  <img src="https://img.shields.io/github/issues/wiirios/eva.svg" alt="Issues Badge">
+  <img src="https://img.shields.io/github/stars/wiirios/eva.svg" alt="Stars Badge">
+</p>
+
 Eva is a lightweight and efficient code editor written entirely in Java, designed to be simple, fast, and extensible. It is ideal for quick editing tasks and lightweight development workflows.
 
 > [!IMPORTANT]
@@ -11,7 +17,7 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
 ## Getting Started
 
 ### Prerequisites
-- Java Development Kit (JDK) 8 or higher
+- Java Development Kit (JDK) 17 or higher
 - Maven
 
 ### Installation
