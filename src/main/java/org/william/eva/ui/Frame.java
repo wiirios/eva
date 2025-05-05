@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -29,6 +31,7 @@ import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Font;
 
 import javax.swing.JPanel;
@@ -241,7 +244,24 @@ public class Frame {
 						}
 						
 					});
-					windowMenu.add(preferencesMenuItem);					
+					windowMenu.add(preferencesMenuItem);		
+					
+					JMenu helpMenu = new JMenu(resources.getText("help"));
+					menuBar.add(helpMenu);
+					
+					JMenuItem githubMenuItem = new JMenuItem(resources.getText("githubpage"));
+					githubMenuItem.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							try {
+								Desktop.getDesktop().browse(new URI("https://github.com/wiirios/eva"));
+							} catch (IOException | URISyntaxException e1) {
+								e1.printStackTrace();
+							}		
+						}
+					});					
+					helpMenu.add(githubMenuItem);
 									
 					textPane.addKeyListener(new KeyListener() {
 						char lastChar;
