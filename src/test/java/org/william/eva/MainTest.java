@@ -21,10 +21,6 @@ public class MainTest {
     	 * Some tests
     	 * With powershell arguments for get the system theme e.g. light theme or dark theme.
     	 */
-        assertTrue(true);
-
-        String[] regedit = new String[] {"Get-PSReadLineOption"};
-        System.out.println(Runtime.getRuntime().exec(regedit));
     
     }
 }
