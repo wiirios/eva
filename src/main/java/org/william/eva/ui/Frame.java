@@ -65,9 +65,7 @@ public class Frame {
 	private static String typeFile;
 	private boolean canSyntax;
 	
-	/* more langs here */
-	
-	private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Set.of(
+	private static final Set<String> KEYWORDS = new HashSet<>(Set.of(
             "abstract", "continue", "for", "new", "switch",
             "assert", "default", "goto", "package", "synchronized",
             "boolean", "do", "if", "private", "this",
@@ -82,7 +80,7 @@ public class Frame {
 	
 	/* later I make the variables have syntax highlight too */
 	
-	private static final Set<String> JAVA_PRIMITIVE_DATA_TYPES = new HashSet<>(Set.of(
+	private static final Set<String> PRIMITIVE_DATA_TYPES = new HashSet<>(Set.of(
 			"byte", "short", "int", "long", "float",
 			"double", "char", "String", "boolean"		
 	));
@@ -98,13 +96,20 @@ public class Frame {
 
 		FlatDarkLaf.setup();
 		FlatLightLaf.setup();
-		
+
 		try {
-			
-			if (config.getSystemTheme() == 0) {
-				UIManager.setLookAndFeel(new FlatDarkLaf());				
+			if (config.getProperties("getthemefromsystem").equals("on")) {
+				if (config.getSystemTheme() == 0) {
+					UIManager.setLookAndFeel(new FlatDarkLaf());				
+				} else {
+					UIManager.setLookAndFeel(new FlatLightLaf());
+				}
 			} else {
-				UIManager.setLookAndFeel(new FlatLightLaf());
+				if (config.getProperties("theme").equals("dark")) {
+					UIManager.setLookAndFeel(new FlatDarkLaf());				
+				} else {
+					UIManager.setLookAndFeel(new FlatLightLaf());
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -250,6 +255,7 @@ public class Frame {
 					menuBar.add(helpMenu);
 					
 					JMenuItem githubMenuItem = new JMenuItem(resources.getText("githubpage"));
+					githubMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK | KeyEvent.ALT_DOWN_MASK));
 					githubMenuItem.addActionListener(new ActionListener() {
 
 						@Override
@@ -293,7 +299,7 @@ public class Frame {
 									/* but works */
 									/* i'll make it better later */
 						            
-						            for (String i : JAVA_KEYWORDS) {
+						            for (String i : KEYWORDS) {
 						                int index = 0;
 						                boolean start = false;
 						                boolean end = false;
