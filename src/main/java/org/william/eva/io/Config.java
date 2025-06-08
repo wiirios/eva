@@ -8,8 +8,13 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+
 public class Config  {
 	private String propertiesPath;
+	
+	 private PropertiesConfiguration propertiesConfiguration;
 	
 	public Config(String propertiesPath) {
 		this.propertiesPath = propertiesPath;
@@ -79,5 +84,12 @@ public class Config  {
 		}
 		
 		return result;
+	}
+	
+	public void rewriteProperties(String key, String newValue) throws IOException, ConfigurationException {
+		propertiesConfiguration = new PropertiesConfiguration(propertiesPath);
+		propertiesConfiguration.setProperty(key, newValue);
+		propertiesConfiguration.save();		
+		
 	}
 }
