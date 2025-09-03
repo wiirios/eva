@@ -7,8 +7,6 @@ public class FileEntity {
 	private String extension;
 	private Path path;
 	private Long size;
-	
-	// constructor
 
 	public FileEntity(String name, String extension, Path path, Long size){
 		this.name = name;
@@ -16,9 +14,7 @@ public class FileEntity {
 		this.path = path;
 		this.size = size;
 	}
-	
-	// getters and setters
-	
+
 	public String getName() {
 		return name;
 	}

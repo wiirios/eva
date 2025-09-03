@@ -18,31 +18,11 @@ import org.william.eva.io.Terminal;
 public class FileManager {	
 	public FileManager() {}
 	
-	/**
-	 * Retrieves the name of the selected file, including its extension.
-	 * 
-	 * This method uses the JFileChooser to get the selected file and then extracts 
-	 * its name, including the file extension (e.g., .java, .txt).
-	 *
-	 * @param jFile The JFileChooser instance used to select the file.
-	 * @return The name of the selected file, including its extension (e.g., "example.txt").
-	 */
-	
 	public String getFileName(JFileChooser jFile) {
 		if (jFile != null) return jFile.getName(jFile.getSelectedFile());
 		
 		return null;
 	}
-	
-	/**
-	 * Retrieves the extension of the selected file
-	 * 
-	 * This method uses the JFileChooser to get the selected file and then extracts 
-	 * its extension
-	 *
-	 * @param jFile The JFileChooser instance used to select the file.
-	 * @return The extension of the selected file
-	 */
 	
 	public String getFileExtension(JFileChooser jFile) {
 		String fileExtension = getFileName(jFile);
@@ -51,30 +31,11 @@ public class FileManager {
 		return null;
 	}
 	
-	/**
-	 * Returns the path of the file selected in the JFileChooser.
-	 * 
-	 * This method retrieves the selected file from the JFileChooser and converts it 
-	 * into a Path object, which represents the location of the file in the file system.
-	 *
-	 * @param jFile The JFileChooser instance used to select the file.
-	 * @return The Path representing the location of the selected file.
-	 */
-	
 	public Path getFilePath(JFileChooser jFile) {
 		if (jFile != null) return Paths.get(String.valueOf(jFile.getSelectedFile()));
 		
 		return null;
 	}
-	
-	/**
-	 * Returns the size of the file selected
-	 * 
-	 * This method returns the size of file in bytes
-	 *
-	 * @param jFile The JFileChooser instance used to select the file.
-	 * @return The size of file or null if the file is not valid.
-	 */
 	
 	public Long getFileSize(JFileChooser jFile) {
 		Long result = null;
@@ -88,17 +49,7 @@ public class FileManager {
 		return result;
 	}
 	
-	/**
-	 * Reads the content of a file selected through a JFileChooser and returns it as a String.
-	 * 
-	 * This method uses a BufferedReader to read the content of the file line by line and appends it to a 
-	 * StringBuilder. After reading the entire file, the content is returned as a single String.
-	 *
-	 * @param jFile The JFileChooser instance used to select the file.
-	 * @return A String containing the content of the selected file.
-	 */
-	
-	public String writerTextPane(JFileChooser jFile) {
+	public String getFileText(JFileChooser jFile) {
 		StringBuilder stringBuilder = new StringBuilder();		
 		Terminal terminal = new Terminal();
 		Config config = new Config("./src/main/resources/config.properties");
