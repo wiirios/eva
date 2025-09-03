@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -217,7 +219,12 @@ public class Frame {
 						public void actionPerformed(ActionEvent e) {
 							fileManager = new FileManager();
 							try {
-								if (config.getProperties("autosave").equals("on")) fileManager.rewriteArchive(jFile, textPane);
+								if (config.getProperties("autosave").equals("on")) {
+									try (BufferedWriter write = Files.newBufferedWriter(fileManager.getFilePath(jFile))) {
+										write.write(textPane.getText(), 0, textPane.getText().length());
+									} catch (Exception e2) {
+									}
+								}
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}

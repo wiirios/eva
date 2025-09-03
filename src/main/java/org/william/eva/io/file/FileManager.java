@@ -76,29 +76,4 @@ public class FileManager {
 		}
 		return stringBuilder.toString();
 	}
-	
-	/**
-	 * Rewrites the selected file with the text contained in a JTextPane.
-	 * 
-	 * This method retrieves the text from the provided JTextPane and overwrites the file
-	 * selected via a JFileChooser. If an IO exception occurs during the writing process,
-	 * it will be caught and the stack trace will be printed.
-	 * 
-	 * @param jFile JFileChooser representing the file to be rewritten.
-	 * @param textPane JTextPane containing the text to be written to the file.
-	 * 
-	 * @throws NullPointerException if jFile or textPane is null.
-	 * @throws IOException if an error occurs during file writing.
-	 */
-	
-	public void rewriteArchive(JFileChooser jFile ,JTextPane textPane) {
-		String fileText = textPane.getText();
-		int fileLenght = fileText.length();
-		
-		try (BufferedWriter writer = Files.newBufferedWriter(getFilePath(jFile))) {
-			writer.write(fileText, 0, fileLenght);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

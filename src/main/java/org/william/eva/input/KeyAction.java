@@ -1,5 +1,7 @@
 package org.william.eva.input;
 
+import java.io.BufferedWriter;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,7 +64,7 @@ public class KeyAction {
 		
 		if (dialogOpen == JFileChooser.APPROVE_OPTION) {
 			fileArchive = new FileEntity(fileManager.getFileName(this.jFile), fileManager.getFileExtension(this.jFile), fileManager.getFilePath(this.jFile), fileManager.getFileSize(this.jFile));
-			String fileText = fileManager.writerTextPane(this.jFile);
+			String fileText = fileManager.getFileText(this.jFile);
 		
 			if (fileText.substring(0, terminal.labelLength).equals(terminal.label)) {
 				terminalPane.setText(fileText);
@@ -89,8 +91,12 @@ public class KeyAction {
 	public void saveDialog() {
 		int dialogSave = this.jFile.showSaveDialog(null);
 		
-		if (dialogSave == JFileChooser.APPROVE_OPTION) {
-			fileManager.rewriteArchive(this.jFile, this.textPane);
+		if (dialogSave == JFileChooser.APPROVE_OPTION) {			
+			try (BufferedWriter write = Files.newBufferedWriter(fileManager.getFilePath(jFile))) {
+				write.write(textPane.getText(), 0, textPane.getText().length());
+			} catch (Exception e) {
+			}
+			
 			terminalPane.setText(terminal.logFileAction(saveFileEnum.getMessage(), fileManager.getFileName(jFile)));
 		}
 	}
