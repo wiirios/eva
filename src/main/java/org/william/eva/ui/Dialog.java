@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.swing.BoxLayout;
@@ -23,26 +24,24 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.william.eva.annotation.Incomplete;
 import org.william.eva.io.Config;
 import org.william.eva.util.Resources;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-
 import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class Dialog extends JDialog {
     private static final long serialVersionUID = 1L;
     private static final int HEIGHT = 300;
     private static final int WIDTH = HEIGHT * 16 / 9;
 
+    private boolean setSelected = false;
+
     private String[] languages = {"EN", "PT"};
     private String[] themes = {"Dark", "Light"};
     private String[] charset = {"ISO-8859-1", "US-ASCII", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "UTF-32BE", "UTF-32LE", "UTF-32"};
-
+    
     private Resources resources;
     private Config config;
     
@@ -57,12 +56,13 @@ public class Dialog extends JDialog {
     @Incomplete
     private void initialize() {
     	resources = new Resources(Locale.getDefault().getLanguage(), Locale.getDefault().getCountry());    
+    	config = new Config("./src/main/resources/config.properties");
     	
         this.setSize(WIDTH, HEIGHT);
         this.setModalityType(DEFAULT_MODALITY_TYPE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle(resources.getText("preferences"));
+        this.setTitle(resources.getText("preferences"));    
         getContentPane().setLayout(new BorderLayout(0, 0));
           
         JList<String> list = new JList<>(new String[]{resources.getText("general"), resources.getText("language")});
@@ -111,8 +111,16 @@ public class Dialog extends JDialog {
         
         panelGeneral.add(saveIntervalPanel);
         
-        JCheckBox jCheckBoxSystemTheme = new JCheckBox();
-        jCheckBoxSystemTheme.setSelected(true);
+        try {
+			if (config.getProperties("getthemefromsystem").equals("true")) setSelected = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        JCheckBox jCheckBoxSystemTheme = new JCheckBox();        
+
+        if (setSelected) jCheckBoxSystemTheme.setSelected(true);
+        else jCheckBoxSystemTheme.setSelected(false);
         
         JPanel getThemeSystemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         getThemeSystemPanel.add(new JLabel(resources.getText("getthemefromsystem")));
@@ -160,16 +168,16 @@ public class Dialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println(jComboBoxThemes.getSelectedItem());
-				//System.out.println(charsetBox.getSelectedItem());
-				//System.out.println(jCheckBox.isSelected()); // auto save
-				//System.out.println(jCheckBoxSystemTheme.isSelected()); // get system theme
-				//System.out.println(saveIntervalField.getText());
-
-				//jComboBoxThemes.getSelectedItem();
-				
+				try {
+					config.rewriteProperties("theme", jComboBoxThemes.getSelectedItem().toString());
+					config.rewriteProperties("charset", charsetBox.getSelectedItem().toString());
+					config.rewriteProperties("autosave", String.valueOf(jCheckBox.isSelected()));
+					config.rewriteProperties("getthemefromsystem", String.valueOf(jCheckBoxSystemTheme.isSelected()));
+					config.rewriteProperties("autosaveinterval", saveIntervalField.getText());
+				} catch (ConfigurationException | IOException e1) {
+					e1.printStackTrace();					
+				}
 			}
-        	
         });
 
         this.setVisible(true);
