@@ -41,8 +41,7 @@ Eva is a lightweight and efficient code editor written entirely in Java, designe
 ### To Do
 - [ ] Create a GitBook  
 - [ ] Create a workflow guide
-- [ ] Add a file explorer panel for opening and managing files  
-- [ ] Add an option to save custom settings  
+- [ ] Add a file explorer panel for opening and managing files
 - [ ] Improve README
 
 ## MIT License
