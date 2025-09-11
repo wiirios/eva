@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class Dialog extends JDialog {
     private String[] languages = {"EN", "PT"};
     private String[] themes = {"Dark", "Light"};
     private String[] charset = {"ISO-8859-1", "US-ASCII", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "UTF-32BE", "UTF-32LE", "UTF-32"};
+    private String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
     
     private Resources resources;
     private Config config;
@@ -49,7 +51,7 @@ public class Dialog extends JDialog {
     private JPanel container;
 
     public Dialog(JFrame parent) {
-        super(parent, true);
+        super(parent, true);                
         initialize();
     }
 
@@ -141,6 +143,16 @@ public class Dialog extends JDialog {
         intervalPanel.add(saveIntervalField);        
         panelGeneral.add(intervalPanel);
         
+        JPanel fontsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        fontsPanel.add(new JLabel(resources.getText("font")));
+        
+        JComboBox<String> jComboBoxFonts = new JComboBox<String>(fonts);
+        fontsPanel.add(jComboBoxFonts);
+        fontsPanel.setPreferredSize(size);
+        fontsPanel.setMaximumSize(fontsPanel.getPreferredSize()); 
+        fontsPanel.setMinimumSize(fontsPanel.getPreferredSize());
+        panelGeneral.add(fontsPanel);
+        
         JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton jButtonSave = new JButton(resources.getText("save"));
         savePanel.add(jButtonSave);
@@ -174,6 +186,7 @@ public class Dialog extends JDialog {
 					config.rewriteProperties("autosave", String.valueOf(jCheckBox.isSelected()));
 					config.rewriteProperties("getthemefromsystem", String.valueOf(jCheckBoxSystemTheme.isSelected()));
 					config.rewriteProperties("autosaveinterval", saveIntervalField.getText());
+					config.rewriteProperties("editorfont", jComboBoxFonts.getSelectedItem().toString());
 				} catch (ConfigurationException | IOException e1) {
 					e1.printStackTrace();					
 				}
