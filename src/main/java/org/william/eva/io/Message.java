@@ -8,8 +8,9 @@ public enum Message {
 	SAVEFILE("Save File", 4, Color.BLUE),
 	UNSUPPORTEDEX("Unsupported Extension", 5, Color.RED),
 	NONCOMPILABLEEXT("Cannot compile this extension", 6, Color.RED),
-	COMPILESUCCESSFUL("The compilation was successful", 7, Color.GREEN);
-		
+	COMPILESUCCESSFUL("The compilation was successful", 7, Color.GREEN),
+	RESTARTEVA("to fully apply the changes, restart the editor", 8, Color.RED);
+	
 	private String message;
 	private int id;
 	private Color color;
