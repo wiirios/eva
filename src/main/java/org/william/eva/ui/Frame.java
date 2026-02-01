@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -29,6 +31,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JComponent;
 
 import org.william.eva.annotation.Incomplete;
 import org.william.eva.input.KeyAction;
@@ -49,6 +54,7 @@ import org.william.eva.io.file.FileManager;
 import org.william.eva.util.Resources;
 
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
 public class Frame {
 	private static final int HEIGHT = 600;
@@ -96,23 +102,16 @@ public class Frame {
 		jFile = new JFileChooser("c:");
 		config = new Config("./src/main/resources/config.properties");
 
-		FlatDarkLaf.setup();
-		FlatLightLaf.setup();
-
+		LookAndFeel style = null;
+		
 		try {
-			if (config.getProperties("getthemefromsystem").equals("on")) {
-				if (config.getSystemTheme() == 0) {
-					UIManager.setLookAndFeel(new FlatDarkLaf());				
-				} else {
-					UIManager.setLookAndFeel(new FlatLightLaf());
-				}
+			if (config.getProperties("getthemefromsystem").equalsIgnoreCase("true")) {
+				style = config.getSystemTheme() == 0 ? new FlatDarkLaf() : new FlatLightLaf();
 			} else {
-				if (config.getProperties("theme").equals("dark")) {
-					UIManager.setLookAndFeel(new FlatDarkLaf());				
-				} else {
-					UIManager.setLookAndFeel(new FlatLightLaf());
-				}
+				style = config.getProperties("theme").equalsIgnoreCase("dark") ? new FlatDarkLaf() : new FlatLightLaf();
 			}
+			
+			UIManager.setLookAndFeel(style);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

@@ -46,7 +46,7 @@ public class Config  {
 	
 	// works only on windows
 	
-	public Integer getSystemTheme() throws IOException {
+	public Integer getSystemTheme() throws IOException, InterruptedException {
 		Charset charset = Charset.forName(getProperties("charset"));
 		StringBuilder stringBuilder = new StringBuilder();
 		String osName = System.getProperty("os.name");
@@ -67,6 +67,9 @@ public class Config  {
 			}
 			
 			result = Integer.valueOf(stringBuilder.substring(stringBuilder.length() - 1));
+			
+			process.waitFor();
+			bufferedReader.close();
 		} else {
 			return null;
 		}
