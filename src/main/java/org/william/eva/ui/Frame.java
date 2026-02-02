@@ -153,7 +153,7 @@ public class Frame {
 					
 					JMenuItem openMenuItem = new JMenuItem(resources.getText("open"));
 					JMenuItem saveMenuItem = new JMenuItem(resources.getText("save"));
-					JMenuItem closeTabMenuItem = new JMenuItem("Close Tab"); // NEW: Close tab menu item
+					JMenuItem closeTabMenuItem = new JMenuItem("Close Tab");
 					JMenuItem runMenuItem = new JMenuItem(resources.getText("run"));
 					JMenuItem compileMenuItem = new JMenuItem(resources.getText("compile"));
 					saveMenuItem.setEnabled(false);
@@ -303,9 +303,6 @@ public class Frame {
 		});
 	}
 	
-	/**
-	 * Sets up syntax highlighting for a given text pane
-	 */
 	private void setupSyntaxHighlighting(JTextPane textPane) {
 		if (textPane == null) return;
 		
@@ -333,6 +330,9 @@ public class Frame {
 			            } 
 			            else if (lastChar == '(') {
 			                doc.insertString(caretPosition, ")", null);
+			            }
+			            else if (lastChar == '[') {
+			            	doc.insertString(caretPosition, "]", null);
 			            }
 			            
 			            for (String i : KEYWORDS) {
