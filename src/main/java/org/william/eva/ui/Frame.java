@@ -84,6 +84,8 @@ public class Frame {
 			"double", "char", "String", "boolean"		
 	));
 	
+	private Set<JTextPane> panesWithSyntax = new HashSet<>();
+	
 	public Frame() {
 		initialize();
 	}
@@ -204,6 +206,11 @@ public class Frame {
 					closeTabMenuItem.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							JTextPane paneToClose = tabManager.getCurrentTextPane();
+							if (paneToClose != null) {
+								panesWithSyntax.remove(paneToClose);
+							}
+							
 							tabManager.closeCurrentTab();
 							if (tabManager.getTabCount() == 0) {
 								saveMenuItem.setEnabled(false);
@@ -301,10 +308,16 @@ public class Frame {
 				}
 			}
 		});
-	}
+	} 
 	
 	private void setupSyntaxHighlighting(JTextPane textPane) {
 		if (textPane == null) return;
+		
+		if (panesWithSyntax.contains(textPane)) {
+			return;
+		}
+		
+		panesWithSyntax.add(textPane);
 		
 		textPane.addKeyListener(new KeyListener() {
 			char lastChar;
@@ -334,12 +347,12 @@ public class Frame {
 			            else if (lastChar == '[') {
 			            	doc.insertString(caretPosition, "]", null);
 			            }
-			            
+			           
 			            for (String i : KEYWORDS) {
 			                int index = 0;
 			                boolean start = false;
 			                boolean end = false;
-			                					                		
+			                					                	
 			                while ((index = text.indexOf(i, index)) >= 0) {
 			                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
 			                    if (index + i.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + i.length()))) end = true;
