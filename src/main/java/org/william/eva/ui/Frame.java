@@ -5,10 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -32,19 +30,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
 
 import javax.swing.JPanel;
-import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JComponent;
 
 import org.william.eva.annotation.Incomplete;
 import org.william.eva.input.KeyAction;
@@ -52,9 +46,6 @@ import org.william.eva.input.Undo;
 import org.william.eva.io.Config;
 import org.william.eva.io.file.FileManager;
 import org.william.eva.util.Resources;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 
 public class Frame {
 	private static final int HEIGHT = 600;
@@ -64,9 +55,9 @@ public class Frame {
 	private JFileChooser jFile;
 	private Config config;
 	private KeyAction btnAction;
-	private Undo undo;
 	private FileManager fileManager;
 	private Resources resources;
+	private TabManager tabManager;
 	
 	public JTextPane terminalPane;
 	
@@ -140,13 +131,6 @@ public class Frame {
 					terminalPane.setBackground(isDarkMode ? new Color(36, 37, 43) : new Color(249, 249, 249));
 					terminalPane.setForeground(isDarkMode ? new Color(255, 255, 255) : new Color(36, 37, 43));
 					
-					JTextPane textPane = new JTextPane();
-					textPane.setVisible(false);
-					textPane.setFont(new Font("Consolas", Font.PLAIN, 14)); 
-					
-					// create undo
-					undo = new Undo(textPane);
-					
 					GroupLayout gl_panel = new GroupLayout(panel);
 					gl_panel.setHorizontalGroup(
 						gl_panel.createParallelGroup(Alignment.LEADING)
@@ -158,20 +142,26 @@ public class Frame {
 					);
 					panel.setLayout(gl_panel);
 
-					jFrame.getContentPane().add(textPane, BorderLayout.CENTER);
+					JPanel editorPanel = new JPanel();
+					editorPanel.setLayout(new BorderLayout());
+					jFrame.getContentPane().add(editorPanel, BorderLayout.CENTER);
+					
+					tabManager = new TabManager(editorPanel);
 					
 					JMenu fileMenu = new JMenu(resources.getText("file"));
 					menuBar.add(fileMenu);
 					
 					JMenuItem openMenuItem = new JMenuItem(resources.getText("open"));
 					JMenuItem saveMenuItem = new JMenuItem(resources.getText("save"));
+					JMenuItem closeTabMenuItem = new JMenuItem("Close Tab"); // NEW: Close tab menu item
 					JMenuItem runMenuItem = new JMenuItem(resources.getText("run"));
 					JMenuItem compileMenuItem = new JMenuItem(resources.getText("compile"));
 					saveMenuItem.setEnabled(false);
-					runMenuItem.setEnabled(false);				
+					closeTabMenuItem.setEnabled(false);
+					runMenuItem.setEnabled(false);
 					compileMenuItem.setEnabled(false);
 					
-					btnAction = new KeyAction(jFile, jFrame, textPane, terminalPane);
+					btnAction = new KeyAction(jFile, jFrame, tabManager, terminalPane);
 					
 					fileMenu.add(openMenuItem);
 					openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
@@ -181,15 +171,17 @@ public class Frame {
 						public void actionPerformed(ActionEvent e) {
 							if (btnAction.openDialog()) {
 								saveMenuItem.setEnabled(true);
+								closeTabMenuItem.setEnabled(true);
 								runMenuItem.setEnabled(true);
-								compileMenuItem.setEnabled(true);		
+								compileMenuItem.setEnabled(true);
 								
-								/* file extension */
 								typeFile = btnAction.jFileExtension();
 								
 								for (String i: btnAction.getExtensions()) {
 									if (i.equals(typeFile)) {
 										canSyntax = true;
+										setupSyntaxHighlighting(tabManager.getCurrentTextPane());
+										break;
 									}
 								}
 							}
@@ -207,6 +199,21 @@ public class Frame {
 						}
 					});
 					
+					fileMenu.add(closeTabMenuItem);
+					closeTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK));
+					closeTabMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							tabManager.closeCurrentTab();
+							if (tabManager.getTabCount() == 0) {
+								saveMenuItem.setEnabled(false);
+								closeTabMenuItem.setEnabled(false);
+								runMenuItem.setEnabled(false);
+								compileMenuItem.setEnabled(false);
+							}
+						}
+					});
+					
 					JMenu projectMenu = new JMenu(resources.getText("project"));
 					menuBar.add(projectMenu);
 					
@@ -219,9 +226,14 @@ public class Frame {
 							fileManager = new FileManager();
 							try {
 								if (config.getProperties("autosave").equals("on")) {
-									try (BufferedWriter write = Files.newBufferedWriter(fileManager.getFilePath(jFile))) {
-										write.write(textPane.getText(), 0, textPane.getText().length());
-									} catch (Exception e2) {
+									JTextPane currentPane = tabManager.getCurrentTextPane();
+									String currentPath = tabManager.getCurrentFilePath();
+									if (currentPane != null && currentPath != null) {
+										try (BufferedWriter write = Files.newBufferedWriter(java.nio.file.Paths.get(currentPath))) {
+											write.write(currentPane.getText(), 0, currentPane.getText().length());
+										} catch (Exception e2) {
+											e2.printStackTrace();
+										}
 									}
 								}
 							} catch (IOException e1) {
@@ -274,72 +286,7 @@ public class Frame {
 						}
 					});					
 					helpMenu.add(githubMenuItem);
-									
-					textPane.addKeyListener(new KeyListener() {
-						char lastChar;
-										
-						@Override
-						public void keyTyped(KeyEvent e) {
-							lastChar = e.getKeyChar();							
-						}
-
-						@Override
-						public void keyPressed(KeyEvent e) {
-							StyledDocument docStyled = textPane.getStyledDocument();
-							Document doc = textPane.getDocument();
-							int docLength = doc.getLength();
-					        
-					        if (canSyntax) {
-					        	try {
-						            String text = doc.getText(0, docLength);
-						            int caretPosition = textPane.getCaretPosition();
-
-						            if (lastChar == '{' && e.getKeyCode() == KeyEvent.VK_ENTER) {
-						                doc.insertString(caretPosition, " \n}", null);
-						            } 
-						            else if (lastChar == '(') {
-						                doc.insertString(caretPosition, ")", null);
-						            }
-						            
-						        	/* yeh yeh i know this code is a bullshit */
-									/* but works */
-									/* i'll make it better later */
-						            
-						            for (String i : KEYWORDS) {
-						                int index = 0;
-						                boolean start = false;
-						                boolean end = false;
-						                					                		
-						                while ((index = text.indexOf(i, index)) >= 0) {
-						                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
-						                    if (index + i.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + i.length()))) end = true;
-						                    
-						                    if (start && end) {              
-						                        Style style = docStyled.addStyle("keywordStyle", null);  
-						                        StyleConstants.setForeground(style, Color.BLUE);
-						                        StyleConstants.setBold(style, true);
-
-						                        docStyled.setCharacterAttributes(index, i.length(), style, false);						                
-						                    }
-
-						                    index += i.length();
-						                }
-						            }
-
-						        } catch (BadLocationException e1) {
-						            e1.printStackTrace();
-						        }
-					        }					        
-
-							/* ignore */
-							// System.out.println(doc.getDefaultRootElement().getElementCount());
-							// System.out.println(doc.getDefaultRootElement().getElementIndex(textPane.getCaretPosition()));
-						}
-
-						@Override
-						public void keyReleased(KeyEvent e) {}
-					});
-																				
+																														
 					JPanel panel_1 = new JPanel();
 					jFrame.getContentPane().add(panel_1, BorderLayout.WEST);
 					panel_1.setLayout(new BorderLayout(0, 0));
@@ -348,17 +295,75 @@ public class Frame {
 					panel_1.add(panel_2, BorderLayout.SOUTH);
 					panel_2.setLayout(new BorderLayout(0, 0));
 					
-					JScrollPane jScrollPane = new JScrollPane(textPane);
-					jFrame.getContentPane().add(jScrollPane);
-					
-					Component horizontalStrut = Box.createHorizontalStrut(55);
-					jScrollPane.setRowHeaderView(horizontalStrut);
-					
 					jFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+		});
+	}
+	
+	/**
+	 * Sets up syntax highlighting for a given text pane
+	 */
+	private void setupSyntaxHighlighting(JTextPane textPane) {
+		if (textPane == null) return;
+		
+		textPane.addKeyListener(new KeyListener() {
+			char lastChar;
+								
+			@Override
+			public void keyTyped(KeyEvent e) {
+				lastChar = e.getKeyChar();							
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				StyledDocument docStyled = textPane.getStyledDocument();
+				Document doc = textPane.getDocument();
+				int docLength = doc.getLength();
+		        
+		        if (canSyntax) {
+		        	try {
+			            String text = doc.getText(0, docLength);
+			            int caretPosition = textPane.getCaretPosition();
+
+			            if (lastChar == '{' && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			                doc.insertString(caretPosition, " \n}", null);
+			            } 
+			            else if (lastChar == '(') {
+			                doc.insertString(caretPosition, ")", null);
+			            }
+			            
+			            for (String i : KEYWORDS) {
+			                int index = 0;
+			                boolean start = false;
+			                boolean end = false;
+			                					                		
+			                while ((index = text.indexOf(i, index)) >= 0) {
+			                    if (index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1))) start = true;					                    
+			                    if (index + i.length() == text.length() || !Character.isLetterOrDigit(text.charAt(index + i.length()))) end = true;
+			                    
+			                    if (start && end) {              
+			                        Style style = docStyled.addStyle("keywordStyle", null);  
+			                        StyleConstants.setForeground(style, Color.BLUE);
+			                        StyleConstants.setBold(style, true);
+
+			                        docStyled.setCharacterAttributes(index, i.length(), style, false);						                
+			                    }
+
+			                    index += i.length();
+			                }
+			            }
+
+			        } catch (BadLocationException e1) {
+			            e1.printStackTrace();
+			        }
+		        }
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
 		});
 	}
 }
