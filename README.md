@@ -28,7 +28,7 @@ Eva is a lightweight code editor written entirely in Java (Swing + [FlatLaf](htt
 - [Architecture Overview](#architecture-overview)
 - [Known Limitations](#known-limitations)
 - [Contributing](#contributing)
-- [License](#license)
+- [License](#mit-license)
 
 ---
 
@@ -37,10 +37,6 @@ Eva is a lightweight code editor written entirely in Java (Swing + [FlatLaf](htt
 | Main window (dark theme) | Main window (light theme) |
 | :---: | :---: |
 | ![Main window - dark](docs/screenshots/main-dark.png) | ![Main window - light](docs/screenshots/main-light.png) |
-
-| Multiple tabs | Output panel (compile / run) |
-| :---: | :---: |
-| ![Multiple tabs](docs/screenshots/tabs.png) | ![Output panel](docs/screenshots/output.png) |
 
 | Preferences - General | Preferences - Language |
 | :---: | :---: |
